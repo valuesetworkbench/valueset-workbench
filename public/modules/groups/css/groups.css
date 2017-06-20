@@ -1,0 +1,17 @@
+.group-description {
+    width: 100%;
+    resize: none;
+}
+
+.preview-img-container {
+    margin-top: 20px;
+}
+
+.preview-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.edit-logo-button {
+}

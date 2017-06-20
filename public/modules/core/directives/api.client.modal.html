@@ -1,0 +1,19 @@
+<!-- Modal -->
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" ng-click="done();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title" id="myModalLabel">REST API</h4>
+</div>
+<div class="modal-body">
+    <div ng-repeat="entry in api" class="api-row">
+        <h4>{{ entry.name }}</h4>
+        <div><em>{{ entry.description }}</em></div>
+        <div>
+            <span class="label label-primary">{{ entry.method }}</span>
+            <code>{{ addJsonParam( getProxyUrl(entry.url)) }}</code>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="done()">Done</button>
+</div>

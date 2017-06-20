@@ -1,0 +1,56 @@
+<section data-ng-controller="ViewGroupsController">
+	<div class="container">
+		<div class="page-header">
+			<div class="row">
+				<h1>{{ group.name }}
+					<a ng-disabled="group.owner != authentication.user._id && !authentication.canAccess(['admin'])" class="btn btn-primary" href="/#!/groups/{{group._id}}/edit">
+						<i class="glyphicon glyphicon-edit"></i>
+					</a>
+				</h1>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div>
+						<img class="group-list-logo" ng-src="{{group.logo}}">
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div>
+						<em>{{ group.description }}</em>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="list-groups">
+			<h2>Membership</h2>
+			<span class="row" ng-repeat="member in group.members" ng-init="userInfo = getUserInfo(member.user)">
+				<div>
+					<div class="row">
+						<div class="col-md-3">
+							<img ng-src="photos/{{ userInfo._id }}" class="group-profile-avatar"/>
+						</div>
+						<div class="col-md-9">
+							<h4 style="vertical-align: top">{{userInfo.displayName}}
+								<span class="label label-primary" ng-show="group.owner == member.user">
+									<span class="glyphicon glyphicon-star" aria-hidden="true"></span> Group Owner</span>
+							</h4>
+							<div class="row">
+								<div class="col-md-8">
+									<span class="label label-success">Permissions</span>
+									<div class="checkbox" ng-repeat="permission in ['Create', 'Edit', 'Delete']">
+										<label >
+											<input type="checkbox" checklist-model="member.permissions" checklist-value="permission" disabled> {{permission}}
+										</label>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</span>
+		</div>
+	</div>
+</section>

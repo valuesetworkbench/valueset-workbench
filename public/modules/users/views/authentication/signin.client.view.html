@@ -1,0 +1,34 @@
+<section data-ng-controller="AuthenticationController">
+
+	<div class="container">
+		<div class="page-header row">
+		<h3 class="col-md-12 text-center">Sign in</h3>
+		</div>
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<a href="/auth/google" class="undecorated-link login-logo-frame">
+					<img class="login-logo" src="/modules/users/img/buttons/google.png">
+				</a>
+				<a href="/auth/github" class="undecorated-link login-logo-frame">
+					<img class="login-logo" src="/modules/users/img/buttons/github.png">
+				</a>
+                <a ng-repeat="provider in providers" href="/auth/{{provider.name}}" class="undecorated-link login-logo-frame">
+                    <img class="login-logo" ng-src="{{provider.logo}}">
+                </a>
+				<div class="login-logo-frame">
+					<div>
+						<i class="fa fa-user login-icon-logo" ng-click="adminSignin()" aria-hidden="true">
+							<div style="font-size: 12pt">
+								Administrator
+							</div>
+						</i>
+					</div>
+					<!--
+					<img class="login-logo" ng-click="adminSignin()" src="/modules/users/img/administrator.jpg">
+					-->
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>

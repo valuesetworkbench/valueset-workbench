@@ -1,0 +1,40 @@
+<section data-ng-controller="CreateValuesetdefinitionsController">
+    <div class="container">
+
+        <div class="page-header">
+            <h2>Create a New Value Set</h2>
+        </div>
+
+        <div class="col-md-12">
+
+            <form class="form" name="valueSetDefinitionForm" novalidate>
+
+                <div>
+                    <label class="control-label" for="Name">Name:
+                    </label>
+                    <div class="controls">
+                        <input min="1" type="text" data-ng-model="name" id="Name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Group:</label>
+                            <ownership resource="valueSetDefinition"></ownership>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="top10">
+                    <button type="button" class="btn btn-success" data-ng-click="create();" ng-disabled="valueSetDefinitionForm.$invalid" tooltip="Save" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                        <i class="glyphicon glyphicon-floppy-disk"></i> Create New
+                    </button>
+                </div>
+
+                <div data-ng-show="error" class="text-danger">
+                    <strong data-ng-bind="error"></strong>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+</section>

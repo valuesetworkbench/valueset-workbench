@@ -1,0 +1,51 @@
+<!-- Modal -->
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="done();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Potential Mappings</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Code System</th>
+                                <th>Relative Match Quality</th>
+                                <th># Unmapped (out of {{ vsd.length }})</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="stat in stats | orderBy : 'value.avg':true">
+                                <td>{{ stat.sab }}</td>
+                                <td><gauge value="{{ stat.value.avg }}" max="{{ max }}"></gauge></td>
+                                <td>{{ stat.value.missing }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-small" ng-click="preview(stat.sab)">
+                                        <i class="fa fa-search" aria-hidden="true"></i> Preview
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-success btn-small" ng-click="createMap(stat.sab)">
+                                        <i class="fa fa-plus" aria-hidden="true"></i> Create Map
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <br/>
+
+                <div data-ng-show="searching">
+                    <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+                </div>
+
+                <div data-ng-show="loading">
+                    <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="done()">Done</button>
+            </div>

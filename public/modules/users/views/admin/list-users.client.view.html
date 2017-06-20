@@ -1,0 +1,27 @@
+<section data-ng-controller="UserAdminController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Users</h1>
+    </div>
+    <div class="list-group">
+        <div data-ng-repeat="user_ in users" class="list-group-item">
+
+            <h4 class="list-group-item-heading">
+                {{user_.displayName}} <small>({{user_.username}})</small>
+            </h4>
+
+            <ui-select multiple ng-model="user_.roles" theme="bootstrap" ng-disabled="disabled">
+                <ui-select-match placeholder="Select a role...">{{$item.name}}</ui-select-match>
+                <ui-select-choices repeat="role.id as role in roles">
+                    <div ng-bind-html="role.id | highlight: $select.search"></div>
+                    <small>{{role.name}}</small>
+                </ui-select-choices>
+            </ui-select>
+            <button type="button" class="btn btn-default" data-ng-click="updateUserRoles(user_)">
+                <span class="glyphicon glyphicon-floppy-disk"></span> Save
+            </button>
+        </div>
+    </div>
+    <div data-ng-show="error" class="text-center text-danger">
+        <strong data-ng-bind="error"></strong>
+    </div>
+</section>

@@ -1,0 +1,30 @@
+<!-- Modal -->
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" ng-click="done();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title" id="myModalLabel">Search Code Systems</h4>
+</div>
+<div class="modal-body">
+
+    <table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Version</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="version in codesystemversions.entry track by $index" data-ng-class="currentCodesystemversion.officialResourceVersionId == version.officialResourceVersionId ? 'current-version' : ''">
+        <td>{{ version.officialResourceVersionId }}</td>
+        <td>{{ version.resourceSynopsis.value }}</td>
+        <td>
+            <button data-ng-show="currentCodesystemversion.officialResourceVersionId != version.officialResourceVersionId" type="button" class="btn btn-success pull-right" ng-click="switch(version)">Switch</button>
+            <span data-ng-show="currentCodesystemversion.officialResourceVersionId == version.officialResourceVersionId"></span>
+        </td>
+    </tr>
+    </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="done()">Cancel</button>
+</div>

@@ -1,0 +1,62 @@
+@media (min-width: 992px) {
+	.nav-users {
+		position: fixed;
+	}
+}
+
+.remove-account-container {
+	display: inline-block;
+	position: relative;
+}
+
+.btn-remove-account {
+	top: 10px;
+	right: 10px;
+	position: absolute;
+}
+
+.mayo-small-logo {
+    width: 200px;
+    height: 200px;
+}
+
+.profile-avatar {
+	background: #fff;
+	border: 5px solid #fff;
+	border-radius: 12px;
+	box-shadow: 0 4px 4px gray;
+	position: relative;
+	margin-bottom: 10px;
+}
+
+.group-profile-avatar {
+	background: #fff;
+	border: 5px solid #fff;
+	border-radius: 12px;
+	box-shadow: 0 4px 4px gray;
+	position: relative;
+	margin-bottom: 10px;
+	height: 150px;
+}
+
+.group-select-profile-avatar {
+	height: 25px;
+}
+
+.login-logo {
+	height: 128px;
+	width: 128px;
+	box-shadow: 0 4px 4px gray;
+}
+
+.login-icon-logo {
+	font-size: 100px;
+	height: 128px;
+	width: 128px;
+	box-shadow: 0 4px 4px gray;
+	cursor: pointer;
+}
+
+.login-logo-frame {
+	margin: 25px;
+}

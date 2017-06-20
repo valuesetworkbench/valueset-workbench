@@ -1,0 +1,92 @@
+<!-- Modal -->
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" ng-click="done();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title" id="myModalLabel">Import</h4>
+</div>
+<div class="modal-body">
+
+    <div>
+        <div>
+            <label for="connection">Connection:</label>
+                <ui-select ng-model="selected.connection" name="connection"
+                           theme="bootstrap" >
+                    <ui-select-match placeholder="Connection..."> {{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="connection in connections | filter: $select.search">
+                        <div ng-bind-html="connection.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </label>
+        </div>
+
+        <div id="credentials" ng-show="selected.connection && !connected">
+            <div class="form-group">
+                <label for="username">User Name:</label>
+                    <input type="text" ng-model="selected.username" name="username" class="form-control">
+                </label>
+                <label for="password">Password:</label>
+                    <input type="password" ng-model="selected.password" name="password" class="form-control">
+                </label>
+            </div>
+        </div>
+
+        <div>
+            <button ng-disabled="! selected.connection" ng-show="! connected" type="button" class="btn btn-success" data-ng-click="connect();">
+                Connect <i class="fa fa-plug" aria-hidden="true"></i>
+            </button>
+
+            <button ng-show="connected" type="button" class="btn btn-danger" data-ng-click="disconnect();">
+                Disconnect <i class="fa fa-ban" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <br>
+
+        <div ng-show="connectionError" class="alert alert-danger fade in">
+            <strong>Error!</strong> {{ connectionError }}
+        </div>
+
+        <div ng-show="tables && tables.length > 0">
+            <label for="tables">Tables:</label>
+                <ui-select ng-model="selected.table" name="tables"
+                           theme="bootstrap">
+                    <ui-select-match placeholder="Table..."> {{$select.selected}}</ui-select-match>
+                    <ui-select-choices repeat="table in tables | filter: $select.search">
+                        <div ng-bind-html="table | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </label>
+        </div>
+
+        <div ng-show="columns && columns.length > 0">
+            <h4>Available Columns</h4>
+            <div class='drop-zone drop-holder' dragula='"header-bag"'>
+                <span class="header-label-parent" ng-repeat="column in columns track by $index">
+                    <span class="column-from-db label label-default">{{ column }}</span>
+                </span>
+            </div>
+
+            <div>
+                <h4>Import as</h4>
+                <table id="parsed-data-table" class="table table-striped">
+                    <tr>
+                        <td ng-repeat="row in headers track by $index">
+                            <h4>{{ row }} </h4><div data-idx="{{ $index }}" class='drop-zone drop-header dashed-border-top parsed-data-table-header-row column-drop' dragula='"header-bag"'></div>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat="row in result track by $index">
+                        <td ng-repeat="col in row track by $index">
+                            {{col}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <button type="button" class="btn btn-default" data-ng-click="import();">
+                <i class="glyphicon glyphicon-transfer"></i> Import
+            </button>
+        </div>
+    </div>
+</div>
+

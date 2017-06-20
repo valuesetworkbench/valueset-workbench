@@ -1,0 +1,22 @@
+<!-- Modal -->
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" ng-click="cancel();"><span
+            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title" id="myModalLabel">Save As</h4>
+</div>
+<div class="modal-body">
+
+
+    <label class="control-label" for="username">Version Name:</label>
+    <input type="text" class="form-control" name="version" id="version" ng-model="version" required>
+    <span class="help-block">Enter the version name.</span>
+
+    <label class="control-label" for="username">Description:</label>
+    <input type="text" class="form-control" name="description" id="description" ng-model="description" required>
+    <span class="help-block">Enter the version description (or leave blank to keep the same as the previous version).</span>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="save()">Save As</button>
+</div>

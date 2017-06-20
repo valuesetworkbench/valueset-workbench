@@ -1,0 +1,147 @@
+<section data-ng-controller="EditCodesystemversionsController" data-ng-init="findOne()">
+
+    <div class="container">
+        <div class="page-header row">
+            <h2>{{ codesystemversion.versionOf.content }}</h2>
+
+            <h4>
+                <span style="vertical-align: middle;"><b>Version: </b> {{ codesystemversion.officialResourceVersionId }}</span>
+                <button type="button" class="btn btn-link" data-ng-click="switchVersions();">
+                    (switch)
+                </button>
+            </h4>
+        </div>
+
+        <div>
+            <form id="codesystemversionForm" name="codesystemversionForm" role="form" class="form" ng-submit="saveCodesystemversion()">
+                <div class="button-toolbar">
+                    <ul class="toolbar-list">
+                        <li>
+                            <h4>File</h4>
+                        </li>
+                        <li>
+                            <button class="btn btn-link" type="submit" tooltip="Save" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="glyphicon glyphicon-floppy-disk"></i> <span data-ng-show="showText">Save</span>
+                            </button>
+                        </li>
+                        <!--
+                        <li>
+                            <button type="button" class="btn btn-link" data-ng-click="xxxx_todo_xxxx();" tooltip="Save As" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="glyphicon glyphicon-floppy-save"></i> <span data-ng-show="showText">Save As</span>
+                            </button>
+                        </li>
+                        -->
+                        <li>
+                            <button type="button" class="btn btn-link" data-ng-click="delete();" tooltip="Delete" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="glyphicon glyphicon-remove-sign"></i> <span data-ng-show="showText">Delete</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-link" data-ng-click="findOne();" tooltip="Cancel" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="glyphicon glyphicon-ban-circle"></i> <span data-ng-show="showText">Cancel</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- this looks out of place and odd... move it yo.
+                <div>
+                    <history resource="{{ id }}"></history>
+                </div>
+                -->
+
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="formalName">Formal Name:</label>
+                                    <input type="text" data-ng-model="codesystemversion.formalName" id="formalName" class="form-control">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description:</label>
+                                    <textarea data-ng-model="codesystemversion.resourceSynopsis.value" id="description" class="form-control"></textarea>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Keywords:</label>
+                                    <tags-input ng-model="tags"></tags-input>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Entities</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="panel-body">
+                        <div>
+                            <form class="form-search form-inline">
+                                <input id="entity-list-filter" ng-model="query" type="text" class="form-control search-query"
+                                       placeholder="Filter by" autofocus>
+                            </form>
+                            <div>
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Namespace</th>
+                                        <th>Description</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="entity in entities">
+                                        <td>{{entity.name.name}}</td>
+                                        <td>{{entity.name.namespace}}</td>
+                                        <td>{{entity.knownEntityDescription[0].designation}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-default" data-ng-click="editEntity(entity);">
+                                                <i class="glyphicon glyphicon-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <!--
+                                <a data-ng-repeat="entity in entry.entity.referencedEntity" class="list-group-item">
+                                    <entity-name-and-uri entity="entity">
+                                        <button type="button" class="btn btn-default" data-ng-click="editCustomCode(entry.entity.referencedEntity, $index);">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-ng-click="removeSpecificEntity(entry.entity.referencedEntity, $index);">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </button>
+                                    </entity-name-and-uri>
+                                </a>
+                                -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <disq ng-if="!isNew" topic="{{ codesystemversion.about }}"></disq>
+    </div>
+
+</section>

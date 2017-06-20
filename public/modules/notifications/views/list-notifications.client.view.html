@@ -1,0 +1,64 @@
+<section data-ng-controller="NotificationsController" data-ng-init="find()">
+    <div class="container">
+        <div class="page-header row">
+            <h1>Notifications</h1>
+            <div data-ng-show="notifications.length > 0">
+                <button type="button" data-ng-click="deleteAll()" class="btn btn-danger">
+                    Delete All <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <button type="button" data-ng-click="markAllAsRead()" class="btn btn-success">
+                    Mark All as Read <span class="glyphicon glyphicon-check"></span>
+                </button>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="checkbox">
+                <label><input type="checkbox" class="checkbox" ng-model="onlyUnread">Show only unread</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="list-group">
+                <div data-ng-repeat="notification in notifications" class="list-group-item">
+                    <small class="list-group-item-text">
+                        Posted on
+                        <span data-ng-bind="notification.created | date:'medium'"></span>
+                    </small>
+                    <h4 class="list-group-item-heading" data-ng-bind="notification.name"></h4>
+                    <div>
+
+                        <div class="row">
+
+                            <div class="col-xs-12">
+                                <div class="btn-group pull-right" role="group">
+                                    <button type="button" ng-model="notification.unread" data-ng-click="markRead(notification)" data-ng-if="notification.unread" class="btn btn-success">
+                                        <span class="glyphicon glyphicon-check"></span>
+                                    </button>
+
+                                    <button type="button" ng-model="notification.unread" data-ng-click="markUnread(notification)" data-ng-if="! notification.unread" class="btn btn-info">
+                                        <span class="glyphicon glyphicon-flag"></span>
+                                    </button>
+
+                                    <button type="button" data-ng-click="remove(notification)" class="btn btn-danger">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+
+                                </div>
+
+                                <p ng-bind-html="notification.content"/>
+                                <a data-ng-click="markRead(notification)" href="{{ notification.link }}">View <span class="glyphicon glyphicon-share"></span></a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- uncomment for debug
+        <div class="alert alert-warning text-center" data-ng-hide="!notifications.$resolved || notifications.length">
+            No Notifications yet, why don't you <a href="/#!/notifications/create">create one</a>?
+        </div>
+        -->
+      </div>
+  </div>
+</section>

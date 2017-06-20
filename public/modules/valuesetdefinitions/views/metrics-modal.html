@@ -1,0 +1,61 @@
+<!-- Modal -->
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="done();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Value Set Metrics</h4>
+            </div>
+
+            <div class="modal-body">
+                <div ng-show="metrics">
+
+                    <h1>Completeness</h1>
+                    <!--
+                    <div justgage
+                         level-colors="{{ missingLevelColors }}"
+                         min="0"
+                         max="100"
+                         symbol="%"
+                         value="{{ ( metrics.entriesCount / (metrics.entriesCount + metrics.missing.length)) * 100 }}"
+                         style="height: 200px; width: 200px"></div>
+                         -->
+                    <h4 class="found-entries">Entries: {{ metrics.entriesCount }}</h4>
+                    <h4 class="missing-entries">Missing: {{ metrics.missing.length }}</h4>
+
+                    <missing-tree metrics="metrics"></missing-tree>
+
+                    <h1>Average Lenth of Path to LCA
+                        <div justgage
+                             min="0"
+                             max="5"
+                             hide-min-max=true
+                             value="{{ avgPathLengthToLca }}"
+                             style="height: 200px; width: 200px"></div>
+                    </h1>
+
+                    <div ng-show="similarity.similarity.length > 0">
+                        <h1>Similarity</h1>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Value Set</th>
+                                    <th>% Similar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="score in similarity.similarity track by $index">
+                                    <td>{{ similarity.indexMap[$index] }}</td>
+                                    <td>{{ score | percentage:1}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div ng-show="! metrics">
+                    <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="done()">Done</button>
+            </div>

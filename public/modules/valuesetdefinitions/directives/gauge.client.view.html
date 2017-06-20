@@ -1,0 +1,7 @@
+<div>
+    <span ng-repeat="i in getNumber(value) track by $index">
+        <span class="guage-led" ng-class="{'shown': i, 'not-shown': !i}"></span>
+    </span>
+    &nbsp;
+    <span ng-show="! hideScore">{{ value | number:4 }} </span>
+</div>

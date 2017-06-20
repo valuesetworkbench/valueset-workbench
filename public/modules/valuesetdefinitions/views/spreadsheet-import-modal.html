@@ -1,0 +1,43 @@
+<!-- Modal -->
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" ng-click="done();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title" id="myModalLabel">Import</h4>
+</div>
+<div class="modal-body">
+
+    <h4>Paste TSV data here:</h4>
+    <div class="import-textarea">
+        <textarea rows="10" ng-change="parse(pasted)" class="form-control" style="min-width: 100%" ng-model="pasted"></textarea>
+    </div>
+
+    <div ng-show="parsed">
+        <h4>Available Headers</h4>
+        <div class='drop-zone drop-holder' dragula='"header-bag"'>
+            <span ng-repeat="header in headers track by $index">
+                <span class="header-label label label-default">{{ header }}</span>
+            </span>
+        </div>
+
+        <h4>Sample Parsed Data</h4>
+        <table id="parsed-data-table" class="table table-striped">
+            <tr>
+                <td class='drop-zone drop-header dashed-border-top parsed-data-table-header-row' data-idx="{{ $index }}" ng-repeat="row in parsed[0] track by $index" dragula='"header-bag"'>drag header here: </td>
+            </tr>
+            <tr ng-repeat="row in parsed | limitTo:showRowsLimit track by $index">
+                <td ng-repeat="col in row track by $index">
+                    {{col}}
+                </td>
+            </tr>
+            <tr ng-if="parsed && parsed.length > showRowsLimit">
+                <td colspan="2"><i class="fa fa-info-circle" aria-hidden="true"></i><b> Only a parsed sample shown (all data will be imported).</b></td>
+            </tr>
+        </table>
+
+        <button type="button" class="btn btn-default" data-ng-click="generate();">
+            <i class="glyphicon glyphicon-transfer"></i> Import
+        </button>
+
+    </div>
+</div>
+

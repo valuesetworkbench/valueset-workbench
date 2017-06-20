@@ -1,0 +1,65 @@
+<!-- Modal -->
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="done();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Potential Mappings</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div ng-repeat="result in results" class="list-group-item">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="list-group-item-heading no-wrap">
+                                    {{result.from.name}} ({{result.from.namespace}})
+                                </h4>
+                                <em>{{result.from.designation}}</em>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h4 class="list-group-item-heading">
+                                    {{result.result.name}} ({{result.result.namespace}})
+                                </h4>
+                                <em>{{result.result.designations[0]}}</em>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5><span class="pull-left">Relative Match Quality:&nbsp;</span></h5><gauge value="{{ result.result.score }}" max="{{ getMaxScoreForUri(result.from.uri)}}" hide-score="true"></gauge>
+                        </div>
+
+                    </div>
+
+                    <div ng-show="missing && missing.length > 0">
+                        <h4>Not Mapped</h4>
+                        <div ng-repeat="miss in missing" class="list-group-item no-map-found">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="list-group-item-heading no-wrap">
+                                        {{miss.name}} - {{miss.namespace}}
+                                    </h4>
+                                    <em>{{miss.designation}}</em>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h4 class="list-group-item-heading">
+                                        <span class="label label-danger">No Map Found</span>
+                                    </h4>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <br/>
+
+                <div data-ng-show="searching">
+                    <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="done()">Done</button>
+            </div>

@@ -1,0 +1,36 @@
+version: '2'
+services:
+  web:
+    build: .
+    links:
+     - db
+    expose:
+      - "3000"
+    environment:
+     NODE_ENV: docker-development
+     FORCE_SSL: "yes"
+    env_file: ${ENV_FILE}
+    external_links:
+    - cts2:cts2
+    - cts2-automap:cts2-automap
+    - database-explorer:database-explorer
+    - standardizer:standardizer
+    - valueset-metrics:valueset-metrics
+
+  db:
+    image: mongo
+    ports:
+     - "27017:27017"
+
+  proxy:
+    image: dockercloud/haproxy
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+    links:
+     - web
+    environment:
+      DEFAULT_SSL_CERT: ${DEFAULT_SSL_CERT}
+      FORCE_SSL: "yes"
+    ports:
+     - "443:443"
+     - "80:80"

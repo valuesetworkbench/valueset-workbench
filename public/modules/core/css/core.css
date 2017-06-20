@@ -1,0 +1,400 @@
+.content {
+	margin-top: 35px;
+}
+.undecorated-link:hover {
+	text-decoration: none;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
+.ng-invalid.ng-dirty{
+    border-color:#FA787E;
+}
+.ng-valid.ng-dirty{
+    border-color:#78FA89;
+}
+
+.new {
+    border-color:#78FA89;
+}
+
+.dirty {
+    border-left: 5px solid green;
+}
+
+.white, .white a {
+    color: #fff;
+}
+
+.logo-text {
+    font-size: 32pt;
+    text-shadow: white;
+}
+
+.small-user-img {
+    height: 25px;
+    float: left;
+    padding-right: 5px;
+}
+
+.terms-logo {
+    height: 50%;
+    width: 50%;
+}
+
+.auto-width {
+    width: auto;
+}
+
+.mayo-super-small-logo {
+    width: 70px;
+    height: 70px;
+}
+
+.ui-sortable-helper {
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, .14), 0 6px 30px 5px rgba(0, 0, 0, .12), 0 8px 10px -5px rgba(0, 0, 0, .2);
+}
+
+.dashed-border-top {
+    border-top: dashed !important;
+}
+
+.drop-zone {
+    border-color: #ccc;
+    border-style: dashed;
+    color: #ccc;
+    padding: 10px;
+}
+
+.drop-header {
+    height: 50px;
+    padding-top: 12px !important;
+}
+
+.header-label {
+    font-size: 16px;
+    cursor: move;
+}
+
+.header-label-parent {
+    font-size: 1.25em;
+}
+
+.drop-holder {
+    min-height: 50px;
+    min-width: 200px;
+}
+
+.button-toolbar {
+    position: fixed;
+    top: 51px;
+    left: 0px;
+    z-index: 520;
+}
+
+.button-toolbar .btn {
+    border-radius: 0 !important;
+}
+
+.well {
+    border: solid;
+    border-width: 1px;
+}
+
+.bordered {
+    border: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+.navbar-brand {
+    padding-top: 15px;
+}
+
+/*
+select,
+select.form-control {
+    -webkit-box-shadow: inset 0 -2px 0 #2196f3;
+    box-shadow: inset 0 -2px 0 #2196f3;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAMAAACelLz8AAAAJ1BMVEUhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISF8S9ewAAAADHRSTlMAAgMJC0uWpKa6wMxMdjkoAAAANUlEQVR4AeXJyQEAERAAsNl7Hf3X6xt0QL6JpZWq30pdvdadme+0PMdzvHm8YThHcT1H7K0BtOMDniZhWOgAAAAASUVORK5CYII=);
+}
+*/
+
+.tab-pane {
+    padding-top: 10px;
+}
+
+.jumbotron {
+    border: solid;
+}
+
+.discussion {
+    padding: 10px;
+}
+
+.comment {
+    border-top: 1px solid #eaebec;
+    padding: inherit;
+}
+
+.comment-avatar {
+    height: 35px;
+}
+
+.comment-mention-user-photo {
+    max-width: 30px;
+    max-height: 30px;
+}
+
+.comment-text {
+    padding-left: 10px;
+}
+
+.col-super-small {
+    width: 3.33333333% !important;
+}
+
+.comment-text > pre {
+    line-height: 110%;
+    background-color: white;
+    border-radius: 0;
+    border: none;
+}
+
+.comment-text-area {
+    rows: 3;
+    cols: 68;
+    resize: vertical;
+    width: 75%;
+    border: solid;
+    border-width: 1px;
+    padding: 5px;
+}
+
+#discussion-anchor {
+    position: fixed;
+    right: 40px;
+    top: 100px;
+    text-decoration: none;
+}
+
+.discussion-count:after {
+    content: attr(data-count);
+    position: relative;
+    left: -5px;
+    top: -15px;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #890405;
+    color: #fff;
+    font-weight: bold;
+    min-width: 20px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px gray;
+    background: #c91106;
+    padding: 0px 4px 2px 4px;
+}
+
+.draggable {
+    cursor: move;
+}
+
+.no-list-style {
+    list-style-type: none;
+}
+
+.mention-user-item {
+    padding: 3px;
+}
+
+.comment-alert {
+    border-left: 5px solid green;
+}
+
+.icon-approve {
+    color: gold;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+/*
+label {
+    font-weight: bold;
+    font-size: 16pt;
+}
+*/
+
+/* Fix for intro.js and bootstrap */
+.introjs-helperNumberLayer {
+    width:  30px;
+    height: 30px;
+}
+
+.search-query {
+    margin-bottom: 10px;
+}
+
+.panel {
+    /*border-color: black;*/
+}
+
+.no-wrap {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow:hidden;
+}
+
+.main-jumbotron {
+    background: none;
+    border: none;
+}
+
+.intro {
+    box-shadow: 10px 10px 5px #888888;
+    padding-bottom: 50px;
+    border-style: solid;
+}
+
+.corner-logo {
+    position: absolute;
+    top: 60px;
+    right: 70px;
+    height: 150px;
+}
+
+.tab {
+    height: 40px;
+    width: 100%;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.16), 0 0 0 0 rgba(0, 0, 0, 0.08);
+    background-color: #e7e7e7;
+    position: relative;
+}
+
+.x-tab-content {
+    position: absolute;
+    bottom: 0px;
+    margin-left: 10px;
+}
+
+.list-group-item {
+    /*margin-bottom: 5px;*/
+    box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.16), 0 0 0 0 rgba(0, 0, 0, 0.08);
+}
+
+.search-group {
+    padding-bottom: 10px;
+}
+
+.ui-select-container {
+    margin: 0 0 10px 0;
+}
+
+img {
+    max-width: 100%;
+}
+
+.top5 { margin-top:5px; }
+.top7 { margin-top:7px; }
+.top10 { margin-top:10px; }
+.top15 { margin-top:15px; }
+.top17 { margin-top:17px; }
+.top30 { margin-top:30px; }
+
+@media (max-width: 1200px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin-top: 7.5px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .collapse.in{
+        display:block !important;
+    }
+}
+
+.logo {
+    height: 350px;
+}
+
+.header-logo-large {
+    height: 75px;
+    margin-top: -10px;
+}
+
+.header-logo-small {
+    height: 35px;
+    margin-top: -7px;
+}
+
+.container {
+    width: auto;
+    margin-left: 75px;
+    margin-right: 75px;
+}
+
+.toolbar-list {
+    list-style:none;
+    padding: 0;
+}
+
+.toolbar-list > li > h4 {
+    padding-left: 10px;
+    color: grey;
+}
+
+.api-row {
+    padding-bottom: 25px;
+}
+
+.group-list-logo {
+    max-height: 100px;
+}
+
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 70px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+    padding-top: 20px;
+}

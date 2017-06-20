@@ -1,0 +1,42 @@
+<div class="col-md-12 discussion">
+    <a ng-if="!hideCount" id="discussion-anchor" href="#discussion" du-smooth-scroll>
+        <h3><i class="glyphicon glyphicon-comment discussion-count" data-count="{{ discussion.length }}"></i></h3>
+    </a>
+
+    <div id="discussion"><h4>Comments</h4></div>
+    <div id="comment-{{ comment._id }}" class="comment row" ng-class="{'comment-alert': comment.alert}" ng-repeat="comment in discussion">
+        <div class="col-xs-1 col-super-small">
+            <img class="comment-avatar" ng-src="{{ comment.authorAvatarUrl }}">
+            <div>
+                <!-- perhaps edit/delete buttons here -->
+            </div>
+        </div>
+        <div class="col-xs-11">
+            <span class="comment-text"><span>{{ comment.comment }}</span></span>
+            - <b>{{ comment.authorName }} ({{ comment.authorId }})</b> - <small>{{ comment.date | date:'medium' }}</small>
+        </div>
+    </div>
+    <div class="comment">
+        <div>
+            <textarea mentio
+                      mentio-template-url="/people-mentions.tpl"
+                      mentio-typed-text="typedTerm"
+                      mentio-items="people | filter:displayName:typedTerm"
+                      mentio-select="getUsername(item)"
+                      ng-model="newComment"
+                      class="comment-text-area"
+                      placeholder="comment text here...">
+            </textarea>
+        </div>
+        <button ng-click="postComment()" class="btn btn-default" ng-disabled="!newComment">Post Comment</button>
+    </div>
+
+    <script type="text/ng-template" id="/people-mentions.tpl">
+        <ul class="list-group user-search">
+            <li mentio-menu-item="person" ng-repeat="person in items" class="list-group-item mention-user-item">
+                <img ng-src="{{person.photo}}" class="comment-mention-user-photo">
+                <span ng-bind-html="person.displayName | mentioHighlight:typedTerm:'menu-highlighted' | unsafe"></span>
+            </li>
+        </ul>
+    </script>
+</div>

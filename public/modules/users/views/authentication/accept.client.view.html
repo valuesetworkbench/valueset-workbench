@@ -1,0 +1,32 @@
+<section data-ng-controller="AcceptTermsAndPrivacyController">
+
+	<div class="container">
+		<div class="page-header row">
+			Value Set Workbench Terms of Use and Privacy Policy
+		</div>
+		<div class="row">
+
+			<div>
+
+				<tabset>
+					<tab heading="Terms and Conditions">
+						<div btf-markdown="terms"></div>
+					</tab>
+					<tab heading="Privacy Policy">
+						<div btf-markdown="privacy"></div>
+					</tab>
+				</tabset>
+
+			</div>
+		</div>
+
+		<hr/>
+
+		<div ng-if="displayButtons" class="row">
+			<h2>By clicking 'Agree,' you accept both the Terms and Conditions and Privacy Policy stated above.</h2>
+			<button type="button" class="btn btn-success" ng-click="accept()">Agree</button>
+			<button type="button" class="btn btn-danger" ng-click="decline()">Decline</button>
+		</div>
+	</div>
+
+</section>

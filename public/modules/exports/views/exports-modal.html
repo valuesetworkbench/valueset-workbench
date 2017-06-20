@@ -1,0 +1,24 @@
+<!-- Modal -->
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="done();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Exported Value Sets</h4>
+            </div>
+            <div class="modal-body">
+
+                <a data-ng-repeat="valueset in exported track by valueset.id" class="list-group-item">
+                    {{valueset.name}} <small>{{valueset.description}}</small>
+                </a>
+
+                <div class="modal-footer">
+                    <!-- Button (Double) -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"></label>
+                        <div class="col-md-8">
+                            <button id="okButton" type="button" data-dismiss="modal" ng-click="done();" name="cancelButton" class="btn btn-success">Ok</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+

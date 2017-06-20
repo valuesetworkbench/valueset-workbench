@@ -1,0 +1,33 @@
+<section data-ng-controller="ExportsController">
+    <div class="page-header">
+        <h1>Exports</h1>
+    </div>
+    <div class="list-group-item">
+        <button type="button" class="btn btn-danger" data-ng-click="clearAllExports()">
+            Clear All
+        </button>
+        <button type="button" class="btn btn-success" data-ng-click="selectAllExports()">
+            Select All
+        </button>
+        <button type="button" class="btn btn-primary" ng-disabled="!hasExport(valuesets)" data-ng-click="export()">
+            Export <i class="glyphicon glyphicon-export"></i>
+        </button>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="valueset in valuesets" class="list-group-item" ng-class="{'added-code': valueset.export == true}">
+            <h4 class="list-group-item-heading">
+                <button type="button" class="btn btn-success"
+                        ng-disabled="valueset.export"
+                        data-ng-click="valueset.export = true">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </button>
+                <button type="button" class="btn btn-danger"
+                        ng-disabled="!valueset.export"
+                        data-ng-click="valueset.export = false">
+                    <i class="glyphicon glyphicon-minus"></i>
+                </button>
+                {{valueset.name}} <small>{{valueset.description}}</small>
+            </h4>
+        </a>
+    </div>
+</section>

@@ -1,0 +1,62 @@
+<section data-ng-controller="HomeController" xmlns="http://www.w3.org/1999/html">
+
+	<div id="jumbotron" class="main-jumbotron jumbotron text-center">
+
+		<div class="row intro">
+			<div class="col-md-6">
+				<p style="font-size: 6em">Value Sets</p>
+				<p style="font-size: 3em">
+					<span data-ng-if="authentication.isLoggedIn()">
+						<a href="#!/valuesetdefinitions-create"><i class="fa fa-plus-circle" aria-hidden="true"></i> Create</a> |</span>
+						<a href="#!/valuesetdefinitions"><i class="fa fa-search" aria-hidden="true"></i> Browse</a>
+				</p>
+			</div>
+			<div class="col-md-6">
+				<p style="font-size: 6em">Maps</p>
+				<p style="font-size: 3em">
+					<span data-ng-if="authentication.isLoggedIn()">
+						<a href="#!/mapversions-create"><i class="fa fa-plus-circle" aria-hidden="true"></i> Create</a> |</span>
+						<a href="#!/mapversions"><i class="fa fa-search" aria-hidden="true"></i> Browse</a>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<span ng-intro-options="overallOptions"
+		 ng-intro-method="startIntroTour"
+		 ng-intro-oncomplete="onComplete">
+	</span>
+
+	<div class="container">
+		<div class="row text-center">
+			<div class="col-md-4">
+				<div class="row text-center"><i class="fa fa-info-circle fa-5x"></i></div>
+				<h3>About</h3>
+				<p class="lead">The Value Set Workbench is a editing environment used to capture
+				the semantics of your data and to map meanings of terms between data sources.</p>
+			</div>
+
+			<div class="col-md-4">
+				<!-- Do we want the logo here?
+				<img class="logo" src="/modules/core/img/brand/vsw.png">
+				-->
+			</div>
+
+			<div class="col-md-4">
+				<div class="row text-center"><i class="fa fa-map fa-5x"></i></div>
+				<h3>Take a Tour</h3>
+				<p class="lead"><a ng-click="startIntroTour();" href=""><span id="overallTour">Overall</span></a>
+					- Learn the basic principles and functionality.
+				</p>
+				<p class="lead"><a href="#!/valuesetdefinitions?tour=overall">Value Sets</a>
+					- Find out how to manage allowable values from your data sources.
+				</p>
+				<p class="lead"><a href="#!/mapversions?tour=overall">Maps</a>
+					- See how Value Set Definitions can be mapped to help align semantics and meaning.
+				</p>
+			</div>
+
+		</div>
+	</div>
+
+</section>

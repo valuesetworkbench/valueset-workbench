@@ -1,0 +1,16 @@
+<!-- Modal -->
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="done();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Search Code Systems</h4>
+            </div>
+            <div class="modal-body">
+
+                <h1>Warning</h1>
+                <div ng-repeat="warning in warnings" ng-include="getWarningTemplate(warning)">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="done()">Done</button>
+            </div>

@@ -1,0 +1,31 @@
+<div>
+
+    <h4><span class="label label-success">Approvals</span></h4>
+    <div ng-repeat="approval in approvals">
+        <i class="fa fa-certificate icon-approve" aria-hidden="true"></i> {{ approval.entity.name }}
+        <button type="button" class="btn btn-link"
+                ng-show="canUnapprove(approval)"
+                data-ng-click="unapprove(approval);">
+            Unapprove
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <button type="button" class="btn btn-default"
+                    data-ng-disabled="!selected.approveAs"
+                    data-ng-click="approve();">
+                + Approval
+            </button>
+        </div>
+        <div class="col-md-8">
+            <ui-select ng-model="selected.approveAs" theme="bootstrap">
+                <ui-select-match placeholder="Select a group...">{{$select.selected.name}}</ui-select-match>
+                <ui-select-choices repeat="group in groups | filter:filterGroups">
+                    {{group.name}}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+</div>

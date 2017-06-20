@@ -1,0 +1,231 @@
+<section data-ng-controller="ViewValuesetdefinitionsController" data-ng-init="findOne()">
+
+    <div class="container">
+        <div data-ng-show="loading">
+            <br/>
+            <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+        </div>
+
+        <div class="page-header details row" data-ng-show="! loading">
+            <h2>{{ valuesetdefinition.definedValueSet.content}}
+                <button class="btn btn-primary" go-click="/valuesetdefinitions/{{id | encodeURIComponent}}/edit"
+                   data-ng-show="! hasApprovals()"
+                   data-ng-disabled="! authentication.hasPermission('Edit', permissions)">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </button>
+                <span data-ng-show="hasApprovals()">
+                    <i tooltip="This resource has approvals and cannot be modified." class="fa fa-lock" aria-hidden="true"></i>
+                </span>
+            </h2>
+
+            <h4><b>Version: </b> {{ valuesetdefinition.officialResourceVersionId }}</h4>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="formalName">Formal Name:</label>
+                            </div>
+                            <div class="col-md-10">
+                                <p type="text" id="formalName">{{ valuesetdefinition.formalName }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="formalName">Description</label>
+                            </div>
+                            <div class="col-md-10">
+                                <p type="text" id="formalName">{{ valuesetdefinition.resourceSynopsis.value }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="formalName">Keywords:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p type="text" id="formalName">{{ valuesetdefinition.keywords }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <approve href="id" resource-name="valueSetDefinition" resource="valuesetdefinition" service="Valuesetdefinitions"></approve>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <tabset>
+                <tab heading="Content">
+                    <div ng-show="resolutionLoading">
+                        <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+                    </div>
+                    <div ng-show="! resolutionLoading">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Namespace</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="entity in resolution.entry">
+                                <td>{{entity.name}}</td>
+                                <td>{{entity.namespace}}</td>
+                                <td>{{entity.designation}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </tab>
+
+                <tab heading="Definition">
+                    <div ng-show="definitionLoading">
+                        <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+                    </div>
+                    <div ng-show="! definitionLoading">
+
+                        <ul ng-model="valuesetdefinition.entry" class="list-group">
+                            <li data-ng-repeat="entry in valuesetdefinition.entry" class="no-list-style" data-ng-class="{'dirty': entry.new}">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+
+                                                <h3 class="panel-title">
+                                                    <a href="javascript:;" data-toggle="collapse" data-target="#collapse-{{ $index }}">
+                                                        <span ng-if="entry.entity">Specific Entities</span>
+                                                        <span ng-if="entry.completeCodeSystem">Complete Code System</span>
+                                                        <span ng-if="entry.completeValueSet">Complete Value Set</span>
+                                                        <span ng-if="entry.propertyQuery">Property Query</span>
+                                                        <span ng-if="entry.associatedEntities">Associated Entities</span>
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="pull-right">
+                                                    <!--
+                                                    <select class="form-control" data-ng-model="entry.operator" id="operator">
+                                                        <option>UNION</option>
+                                                        <option>INTERSECT</option>
+                                                    </select>
+                                                    -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="collapse-{{ $index }}" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <div ng-if="entry.entity">
+                                                <div>
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Code</th>
+                                                            <th>Namespace</th>
+                                                            <th>Description</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr ng-repeat="entity in entry.entity.referencedEntity">
+                                                            <td>{{entity.name}}</td>
+                                                            <td>{{entity.namespace}}</td>
+                                                            <td>{{entity.designation}}</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <!--
+                                                    <a data-ng-repeat="entity in entry.entity.referencedEntity" class="list-group-item">
+                                                        <entity-name-and-uri entity="entity">
+                                                            <button type="button" class="btn btn-default" data-ng-click="editCustomCode(entry.entity.referencedEntity, $index);">
+                                                                <i class="glyphicon glyphicon-edit"></i>
+                                                            </button>
+                                                            <button type="button" class="btn btn-default" data-ng-click="removeSpecificEntity(entry.entity.referencedEntity, $index);">
+                                                                <i class="glyphicon glyphicon-remove"></i>
+                                                            </button>
+                                                        </entity-name-and-uri>
+                                                    </a>
+                                                    -->
+                                                </div>
+                                            </div>
+
+                                            <div ng-if="entry.completeCodeSystem" class="list-group-itemxxx">
+                                                <div>
+                                                    <b>Code System:</b> {{ entry.completeCodeSystem.codeSystemVersion.version.content }}
+                                                </div>
+                                            </div>
+
+                                            <div ng-if="entry.completeValueSet" class="list-group-item">
+                                                <div>
+                                                    <a data-ng-repeat="entity in entry.entity.referencedEntity" class="list-group-item">
+                                                        <h4 class="list-group-item-heading">
+                                                            {{entity.uri}} <small>{{entity.name}} : {{entity.namespace}}</small>
+                                                        </h4>
+                                                        <em>{{entity.designation}}</em>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div ng-if="entry.propertyQuery" class="list-group-item">
+                                                <div>
+                                                    <a data-ng-repeat="entity in entry.entity.referencedEntity" class="list-group-item">
+                                                        <h4 class="list-group-item-heading">
+                                                            {{entity.uri}} <small>{{entity.name}} : {{entity.namespace}}</small>
+                                                        </h4>
+                                                        <em>{{entity.designation}}</em>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div ng-if="entry.associatedEntities">
+                                                <div>
+                                                    <div data-ng-init="associatedEntity = entry.associatedEntities" class="list-group-item">
+                                                        <h4 class="list-group-item-heading">
+                                                            Focus: {{associatedEntity.referencedEntity.uri}} <small>{{associatedEntity.referencedEntity.name}} : {{associatedEntity.referencedEntity.namespace}}</small>
+                                                        </h4>
+                                                        <h5 ng-if="associatedEntity.codeSystem">Code System: {{ associatedEntity.codeSystem.content }}</h5>
+                                            <span ng-if="associatedEntity.codeSystemVersion">
+                                                <h5>Code System: {{ associatedEntity.codeSystemVersion.codeSystem.content }}</h5>
+                                                <h5>Code System Version: {{ associatedEntity.codeSystemVersion.version.content }}</h5>
+                                            </span>
+                                                        <em>{{associatedEntity.referencedEntity.designation}}</em>
+                                                        <div>
+                                                            Direction: {{ associatedEntity.direction }}
+                                                        </div>
+                                                        <div>
+                                                            Leaf Or All: {{ associatedEntity.leafOnly }}
+                                                        </div>
+                                                        <div>
+                                                            Transitivity: {{ associatedEntity.transitivity }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</section>

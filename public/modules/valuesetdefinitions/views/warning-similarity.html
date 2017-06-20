@@ -1,0 +1,10 @@
+<span>
+    <a href="#!/valuesetdefinitions/{{ warning.similarTo.href | encodeURIComponent | encodeURIComponent}}" data-ng-click="done()">
+        <b>Value Set: </b>
+        {{ warning.similarTo.definedValueSet.content }},
+        <b>Version: </b>
+        {{ warning.similarTo.officialResourceVersionId }}</a>
+        is {{ warning.score | percentage}} similar.
+    </a>
+
+</span>

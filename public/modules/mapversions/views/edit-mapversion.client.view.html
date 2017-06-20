@@ -1,0 +1,201 @@
+<section data-ng-controller="EditMapversionsController" data-ng-init="findOne()">
+
+    <div class="container">
+        <div class="page-header row">
+            <h2>{{ mapVersion.versionOf.content }}</h2>
+
+            <h4>
+                <span style="vertical-align: middle;"><b>Version: </b> {{ mapVersion.officialResourceVersionId }}</span>
+                <switch-versions
+                        href="{{ id }}"
+                        current="mapVersion"
+                        directory="MapVersionDirectory"
+                        resource-name="mapversion"></switch-versions>
+            </h4>
+        </div>
+
+        <div>
+            <form id="mapVersionForm" name="mapVersionForm" role="form" class="form" ng-submit="saveMapVersion()">
+                <div class="button-toolbar">
+                    <ul class="toolbar-list">
+                        <li>
+                            <h4>File</h4>
+                        </li>
+                        <li>
+                            <button data-ng-disabled="! hasChanges()" class="btn btn-link" type="submit" tooltip="Save" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="glyphicon glyphicon-floppy-disk"></i> Save<span data-ng-show="hasChanges()" style="color: red">*</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-link" data-ng-click="saveMapVersionAs();" tooltip="Save As" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="glyphicon glyphicon-floppy-save"></i> <span data-ng-show="showText">Save As</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button data-ng-disabled="! authentication.hasPermission('Delete', permissions)" type="button" class="btn btn-link" data-ng-click="delete();" tooltip="Delete" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="glyphicon glyphicon-remove-sign"></i> <span data-ng-show="showText">Delete</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button data-ng-disabled="! hasChanges()" type="button" class="btn btn-link" data-ng-click="cancel();" tooltip="Cancel" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="glyphicon glyphicon-ban-circle"></i> <span data-ng-show="showText">Cancel</span>
+                            </button>
+                        </li>
+                        <li>
+                            <h4>Utils</h4>
+                        </li>
+                        <li>
+                            <button type="button" ng-disabled="!(mapVersion.fromValueSetDefinition && mapVersion.toValueSetDefinition)" class="btn btn-link" data-ng-click="automap();" tooltip="Auto Map" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="fa fa-connectdevelop" aria-hidden="true"></i></i> <span data-ng-show="showText">Auto Map</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-link" data-ng-click="import();" tooltip="Import" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="fa fa-download" aria-hidden="true"></i> <span data-ng-show="showText">Import</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-link" data-ng-click="export();" tooltip="Export" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="glyphicon glyphicon-export"></i> <span data-ng-show="showText">Export</span>
+                            </button>
+                        </li>
+                        <li>
+                            <api api="api"></api>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- this looks out of place and odd... move it yo.
+                <div>
+                    <history resource="{{ id }}"></history>
+                </div>
+                -->
+
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Mapped Value Sets</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label class="control-label">From Value Set:</label>
+                                            <span>{{ mapVersion.fromValueSetDefinition.valueSet.content }}</span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label class="control-label">To Value Set:</label>
+                                            <span>{{ mapVersion.toValueSetDefinition.valueSet.content }}</span>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="formalName">Formal Name:</label>
+                                    <input type="text" data-ng-model="mapVersion.formalName" id="formalName" class="form-control">
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description:</label>
+                                    <textarea data-ng-model="mapVersion.resourceSynopsis.value" id="description" class="form-control"></textarea>
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Keywords:</label>
+                                    <tags-input ng-model="tags"></tags-input>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Group:</label>
+                                <ownership resource="mapVersion"></ownership>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+        <div class="row">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Mapped Concepts <span class="pull-right"><i class="fa fa-info-circle" aria-hidden="true"></i> Drag a line between the two columns to connect</span></h3>
+                </div>
+                <div class="panel-body" data-ng-init="getEntries()">
+                    <div class="jtk-demo-canvas canvas-wide source-target-demo jtk-surface jtk-surface-nopan" data-ng-init="renderConnections(true)" id="canvas">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form class="form-search form-inline">
+                                    <input ng-model="fromQuery" type="text" class="form-control search-query"
+                                           placeholder="Filter by" ng-model-options="{debounce: 250}">
+                                </form>
+                                <div data-ng-show="fromEntitiesLoading">
+                                    <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+                                </div>
+                                <ul class="list-unstyled" data-ng-repeat="entry in filteredFromEntities">
+                                    <li>
+                                        <div class="panel panel-info source" id="from-{{entry.uri | encodeURIComponent}}">
+                                            <div class="panel-heading no-wrap">{{entry.name}} ({{entry.namespace}})</div>
+                                            <div class="panel-body">
+                                                <h4><em>{{entry.designation}}</em></h4>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4"></div>
+
+                            <div class="col-md-4">
+                                <form class="form-search form-inline">
+                                    <input ng-model="toQuery" type="text" class="form-control search-query"
+                                           placeholder="Filter by" ng-model-options="{debounce: 250}">
+                                </form>
+                                <div data-ng-show="toEntitiesLoading">
+                                    <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+                                </div>
+                                <ul class="list-unstyled" data-ng-repeat="entry in filteredToEntities">
+                                    <li>
+                                        <div class="panel panel-info target" id="to-{{entry.uri | encodeURIComponent }}">
+                                            <div class="panel-heading no-wrap">{{entry.name}} ({{entry.namespace}})</div>
+                                            <div class="panel-body">
+                                                <h4><em>{{entry.designation}}</em></h4>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <disq ng-if="!isNew" topic="{{ mapVersion.about }}"></disq>
+    </div>
+
+</section>

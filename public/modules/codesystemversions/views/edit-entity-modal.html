@@ -1,0 +1,84 @@
+<!-- Modal -->
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" ng-click="cancel();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title" id="myModalLabel">Edit Entity</h4>
+</div>
+<div class="modal-body">
+
+    <div data-ng-show="!entity">
+        <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+    </div>
+
+    <div data-ng-show="entity">
+        <form id="customCodeForm" class="form-horizontal" ng-submit="save()">
+            <fieldset>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="display">Designations</label>
+                    <div class="col-md-10">
+                        <div data-ng-repeat="designation in entity.designation" class="row designation-list-item">
+                            <div class="col-md-7">
+                                <input ng-model="designation.value" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control input-small" ng-model="designation.designationRole" name="designationRole">
+                                    <option value="ALTERNATIVE">ALTERNATIVE</option>
+                                    <option value="PREFERRED">PREFERRED</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-link pull-right" data-ng-click="removeDesignation(entity.designation, $index);">
+                                    remove...
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-link" data-ng-click="addDesignation(entity.designation);">
+                            add new...
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="display">Properties</label>
+                    <div class="col-md-10">
+                        <div data-ng-repeat="property in entity.property" class="row designation-list-item">
+                            <div class="col-md-3">
+                                <input ng-model="property.predicate.name" ng-change="updatePredicateUri(property.predicate, property.predicate.name)" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-7">
+                                <input ng-model="property.value[0].literal.value" type="text" class="form-control">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-link pull-right" data-ng-click="removeProperty(entity.property, $index);">
+                                    remove...
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-link" data-ng-click="addProperty(entity.property);">
+                            add new...
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <!-- Button (Double) -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"></label>
+                        <div class="col-md-8">
+                            <button id="saveButton" type="submit" name="saveButton" class="btn btn-success">Save</button>
+                            <button id="cancelButton" type="button" data-dismiss="modal" ng-click="cancel();" name="cancelButton" class="btn btn-danger">Cancel</button>
+                        </div>
+                    </div>
+
+                    <div class="entity-comments">
+                        <disq ng-if="!isNew" topic="{{ entity.about }}" hide-count="true"></disq>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+</div>
+

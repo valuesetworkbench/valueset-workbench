@@ -1,0 +1,30 @@
+<section data-ng-controller="ConnectionsController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Connections</h1>
+    </div>
+    <div class="list-group">
+        <div data-ng-repeat="connection in connections" data-ng-href="#!/connections/{{connection._id}}" class="list-group-item">
+
+            <div class="row">
+                <div class="col-md-10">
+                    <h4 class="list-group-item-heading" data-ng-bind="connection.name"></h4>
+                    <small>{{connection.jdbcUrl}}</small>
+                </div>
+
+                <div class="col-md-2">
+                    <span class="pull-right" data-ng-show="authentication.user">
+                        <a class="btn btn-primary" href="/#!/connections/{{connection._id}}/edit">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a class="btn btn-primary" data-ng-click="remove(connection);">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!connections.$resolved || connections.length">
+    	No Connections yet, why don't you <a href="/#!/connections/create">create one</a>?
+    </div>
+</section>

@@ -1,0 +1,90 @@
+.import-textarea {
+    border: dashed;
+    border-width: 5px;
+    padding: 10px;
+}
+
+.already-added-text {
+    color: green;
+}
+
+.guage-led {
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 1px;
+    border: 1px solid black;
+}
+
+.shown {
+    background: green;
+}
+
+.not-shown {
+    background: white;
+}
+
+.no-map-found {
+    border-left: 5px solid red;
+}
+
+/*
+.popover {
+    max-width: 500px;
+}
+
+.popover {
+    position: relative;
+    display: block;
+    margin: 20px;
+}
+*/
+
+.node {
+    cursor: pointer;
+}
+
+.node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.missing {
+    stroke: red;
+}
+
+.node text {
+    font: 10px sans-serif;
+}
+
+.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+}
+
+#warning-anchor {
+    position: fixed;
+    right: 50px;
+    top: 140px;
+    text-decoration: none;
+    color: #c91106;
+    cursor: pointer;
+}
+
+.missing-entries {
+    color: red;
+}
+
+.found-entries {
+    color: steelblue;
+}
+
+.dashed {
+    stroke-dasharray: 3
+}
+
+.current-version {
+    border-left: 5px solid green;
+}

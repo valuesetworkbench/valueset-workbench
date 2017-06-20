@@ -1,0 +1,9 @@
+doctype html
+html(lang="en")
+    body
+        h1 Value Set Workbench Notification
+        h3 Comment by #{notification.source} on #{notification.created}
+        div
+            p #{notification.content}
+        div
+            a(href=notification.link) View post...

@@ -1,0 +1,95 @@
+<section data-ng-controller="EditGroupsController" xmlns="http://www.w3.org/1999/html">
+    <div class="container">
+        <div class="page-header">
+            <div class="row">
+                <h1>{{ group.name }}</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div>
+                        <img class="group-list-logo" ng-src="{{group.logo}}">
+                        <button type="button" ng-click="changeLogo()" class="btn btn-default btn-xs edit-logo-button">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div>
+                        <label>Description:</label>
+                        <textarea rows="5" data-ng-model="group.description" id="description" class="form-control group-description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2>Membership</h2>
+            <div class="form-horizontal">
+                <div>
+                    <div class="list-groups">
+
+                        <span class="row" ng-repeat="member in group.members" ng-init="userInfo = getUserInfo(member.user)">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <img ng-src="photos/{{ userInfo._id }}" class="group-profile-avatar"/>
+                                        <div>
+                                            <button ng-show="group.owner != member.user" type="button" ng-click="removeUser(member)" class="btn btn-xs btn-danger">
+                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove
+                                            </button>
+                                            <button ng-show="group.owner != member.user" type="button" ng-click="makeOwner(member)" class="btn btn-xs btn-success">
+                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Owner
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <h4 style="vertical-align: top">{{userInfo.displayName}}
+                                            <span class="label label-primary" ng-show="group.owner == member.user">
+                                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Group Owner</span>
+                                        </h4>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <span class="label label-success">Permissions</span>
+                                                <div class="checkbox" ng-repeat="permission in ['Create', 'Edit', 'Delete']">
+                                                    <label >
+                                                        <input type="checkbox" checklist-model="member.permissions" checklist-value="permission"> {{permission}}
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <div ng-show="availableUsers.length > 0" class="form-group">
+                            <div class="col-md-4">
+                                <ui-select ng-model="current.selected" theme="bootstrap" ng-disabled="disabled">
+                                    <ui-select-match placeholder="Select a user to add to the group...">{{$select.selected.displayName}}</ui-select-match>
+                                    <ui-select-choices repeat="user in availableUsers">
+                                        <img ng-src="photos/{{ user._id }}" class="group-select-profile-avatar"/> <span ng-bind-html="user.displayName | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" ng-click="addUser()" class="btn btn-default" aria-label="Left Align">
+                                    Add <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:50px">
+                        <button type="button" ng-click="update()" class="btn btn-default" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save Group
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

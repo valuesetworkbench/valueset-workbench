@@ -1,0 +1,56 @@
+<section data-ng-init="find()">
+    <div class="container">
+
+        <div class="page-header">
+            <span ng-intro-options="listTour"
+                  ng-intro-method="startListTour"
+                  ng-intro-onexit="onComplete"
+                  ng-intro-oncomplete="onComplete">
+            </span>
+
+            <h1>All {{ display }}s</h1>
+            <a id="create-valuesetdefinition-button" class="btn btn-primary" ng-href="/#!/{{ resourceName }}s-create"
+               data-ng-disabled="! canCreate">
+                New {{ display }} <i class="glyphicon glyphicon-edit"></i>
+            </a>
+        </div>
+
+        <div id="valuesetdefinition-list" class="list-groups" data-ng-show="! loading">
+            <form class="form-search form-inline">
+                <input  id="valuesetdefinition-list-filter" ng-model="query" type="text" class="form-control search-query"
+                        placeholder="Filter by" ng-model-options="{debounce: 250}">
+            </form>
+            <div data-ng-repeat="(entry, versions) in entries" class="search-group">
+                <div>
+                    <div class="tab">
+                        <span class="x-tab-content">
+                            <h4><i class="fa fa-list" aria-hidden="true"></i> {{entry}}</h4>
+                        </span>
+                    </div>
+
+                    <a data-ng-href="#!/{{ resourceName }}s/{{version.href | uriencode}}" data-ng-repeat="version in versions" class="list-group-item">
+                        <span class="list-group-item-heading">
+                            <span class="label label-primary">Version: {{version.officialResourceVersionId}}</span>
+                        </span> |
+                        <b>
+                            {{version.formalName}}
+                        </b>
+
+                        <span ng-show="isProduction(version)">
+                            <span class="label label-primary">PRODUCTION</span>
+                        </span>
+
+                        <p>
+                            <em>{{version.resourceSynopsis.value}}</em>
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div data-ng-show="loading">
+            <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+        </div>
+
+    </div>
+</section>

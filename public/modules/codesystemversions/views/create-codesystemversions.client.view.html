@@ -1,0 +1,80 @@
+<section data-ng-controller="CreateCodesystemversionsController" xmlns="http://www.w3.org/1999/html">
+    <div class="page-header">
+        <h2>Create a New Map</h2>
+    </div>
+
+    <div class="col-md-12">
+        <form name="codesystemversionForm" novalidate>
+            <fieldset>
+                <div>
+                    <div class="form-group">
+                        <label class="control-label" for="name">Name</label>
+                        <div class="controls">
+                            <input type="text" min="1" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="control-label">From Value Set:</label>
+                                <div>
+                                    <ui-select ng-model="valuesets.fromValueSetDefinition" theme="bootstrap" ui-select-required>
+                                        <ui-select-match placeholder="from Value Set...">
+                                            <div>
+                                                <b>Value Set:</b> <span ng-bind-html="$select.selected.definedValueSet.content | highlight: $select.search"></span>,
+                                                <b>Version:</b> <span>{{ $select.selected.officialResourceVersionId }}</span>
+                                                <em><small><i class="fa fa-angle-double-right" aria-hidden="true"></i> {{ $select.selected.resourceSynopsis.value }}</small></em>
+                                            </div>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="valueSetDefinition in valueSetDefinitions | filter: $select.search">
+                                            <div>
+                                                <b>Value Set:</b> <span ng-bind-html="valueSetDefinition.definedValueSet.content | highlight: $select.search"></span>,
+                                                <b>Version:</b> <span>{{ valueSetDefinition.officialResourceVersionId }}</span>
+                                            </div>
+                                            <em><small><i class="fa fa-angle-double-right" aria-hidden="true"></i> {{ valueSetDefinition.resourceSynopsis.value }}</small></em>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div>
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="control-label">To Value Set:</label>
+                                <div>
+                                    <ui-select ng-model="valuesets.toValueSetDefinition" theme="bootstrap" ui-select-required>
+                                        <ui-select-match placeholder="from Value Set...">
+                                            <div>
+                                                <b>Value Set:</b> <span ng-bind-html="$select.selected.definedValueSet.content | highlight: $select.search"></span>,
+                                                <b>Version:</b> <span>{{ $select.selected.officialResourceVersionId }}</span>
+                                                <em><small><i class="fa fa-angle-double-right" aria-hidden="true"></i> {{ $select.selected.resourceSynopsis.value }}</small></em>
+                                            </div>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="valueSetDefinition in valueSetDefinitions | filter: $select.search">
+                                            <div>
+                                                <b>Value Set:</b> <span ng-bind-html="valueSetDefinition.definedValueSet.content | highlight: $select.search"></span>,
+                                                <b>Version:</b> <span>{{ valueSetDefinition.officialResourceVersionId }}</span>
+                                            </div>
+                                            <em><small><i class="fa fa-angle-double-right" aria-hidden="true"></i> {{ valueSetDefinition.resourceSynopsis.value }}</small></em>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-success" data-ng-click="create();" ng-disabled="codesystemversionForm.$invalid" tooltip="Save" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                        <i class="glyphicon glyphicon-floppy-disk"></i> Create New
+                    </button>
+                </div>
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+            </fieldset>
+        </form>
+    </div>
+</section>

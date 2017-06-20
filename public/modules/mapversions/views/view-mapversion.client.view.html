@@ -1,0 +1,145 @@
+<section data-ng-controller="ViewMapversionsController" data-ng-init="findOne()">
+	<div class="container">
+
+        <div class="page-header row">
+            <h2>{{ mapVersion.versionOf.content }}
+                <button class="btn btn-primary" go-click="/mapversions/{{id | encodeURIComponent}}/edit"
+                   data-ng-show="! hasApprovals()"
+                   data-ng-disabled="! authentication.hasPermission('Edit', permissions)">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </button>
+                <span data-ng-show="hasApprovals()">
+                    <i tooltip="This resource has approvals and cannot be modified." class="fa fa-lock" aria-hidden="true"></i>
+                </span>
+            </h2>
+
+            <h4><b>Version: </b> {{ mapVersion.officialResourceVersionId }}</h4>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-exchange" aria-hidden="true"></i> Mapped Value Sets</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="control-label">From Value Set:</label>
+                                    <div>Value Set: {{ fromValueSetDefinition.definedValueSet.content }}</div>
+                                    <div>Version: {{ fromValueSetDefinition.officialResourceVersionId }}</div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="control-label">To Value Set:</label>
+                                    <div>Value Set: {{ toValueSetDefinition.definedValueSet.content }}</div>
+                                    <div>Version: {{ toValueSetDefinition.officialResourceVersionId }}</div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="formalName">Formal Name:</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <p type="text" id="formalName">{{ mapVersion.formalName }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="formalName">Description</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <p type="text" id="formalName">{{ mapVersion.resourceSynopsis.value }}</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="formalName">Keywords:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <p type="text" id="formalName">{{ mapVersion.keywords }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <approve href="id" resource-name="mapVersion" resource="mapVersion" service="Mapversions"></approve>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Mapped Concepts</h3>
+                </div>
+                <div class="panel-body" data-ng-init="getEntries()">
+                    <div data-ng-show="loading">
+                        <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+                    </div>
+                    <div class="jtk-demo-canvas canvas-wide source-target-demo jtk-surface jtk-surface-nopan" data-ng-init="renderConnections(true)" id="canvas">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form class="form-search form-inline">
+                                    <input ng-model="fromQuery" type="text" class="form-control search-query"
+                                           placeholder="Filter by" autofocus>
+                                </form>
+                                <ul class="list-unstyled" data-ng-repeat="entry in (filteredFromEntities = (fromEntities | filter:fromQuery)) track by $index">
+                                    <li>
+                                        <div class="panel panel-info source" id="from-{{entry.uri | encodeURIComponent}}">
+                                            <div class="panel-heading no-wrap">{{entry.name}} ({{entry.namespace}})</div>
+                                            <div class="panel-body">
+                                                <h4><em>{{entry.designation}}</em></h4>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4"></div>
+
+                            <div class="col-md-4">
+                                <form class="form-search form-inline">
+                                    <input ng-model="toQuery" type="text" class="form-control search-query"
+                                           placeholder="Filter by" autofocus>
+                                </form>
+                                <ul class="list-unstyled" data-ng-repeat="entry in (filteredToEntities = (toEntities | filter:toQuery)) track by $index">
+                                    <li>
+                                        <div class="panel panel-info target" id="to-{{entry.uri | encodeURIComponent }}">
+                                            <div class="panel-heading no-wrap">{{entry.name}} ({{entry.namespace}})</div>
+                                            <div class="panel-body">
+                                                <h4><em>{{entry.designation}}</em></h4>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
