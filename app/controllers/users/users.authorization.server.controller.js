@@ -70,7 +70,9 @@ function findOwner(body) {
 		} else {
 			return [];
 		}
-	}
+	} else {
+        return [];
+    }
 }
 
 var methodToPrivilegeMap = {
@@ -96,7 +98,7 @@ exports.isGroupAuthorized = function(req, res, next) {
 	} else {
 		var resourceOwner = findOwner(resource);
 
-		if (! resourceOwner) {
+		if (resourceOwner.length == 0) {
             req.permissions = Group.permissions;
             next();
         } else if (resourceOwner && req.user.email == resourceOwner[0]) {
