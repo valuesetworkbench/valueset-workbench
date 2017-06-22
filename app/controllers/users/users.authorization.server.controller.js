@@ -96,7 +96,10 @@ exports.isGroupAuthorized = function(req, res, next) {
 	} else {
 		var resourceOwner = findOwner(resource);
 
-		if (resourceOwner && req.user.email == resourceOwner[0]) {
+		if (! resourceOwner) {
+            req.permissions = Group.permissions;
+            next();
+        } else if (resourceOwner && req.user.email == resourceOwner[0]) {
 			req.permissions = Group.permissions;
 			next();
 		} else {

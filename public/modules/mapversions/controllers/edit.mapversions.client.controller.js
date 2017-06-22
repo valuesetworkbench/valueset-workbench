@@ -44,6 +44,14 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
             };
         }
 
+        $scope.sortEntities = function(entities) {
+            entities.sort(function(a, b) {
+                return a.name > b.name;
+            });
+
+            return entities;
+        }
+
         function loadFromEntities(q) {
             var query = ""
             if (q) {
@@ -62,7 +70,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                         fromEntities.push(toUriEntityName(entity));
                     });
 
-                    $scope.filteredFromEntities = fromEntities
+                    $scope.filteredFromEntities = $scope.sortEntities(fromEntities)
 
                     $scope.fromEntities = $scope.filteredFromEntities;
                     if ($scope.fromEntities) {
@@ -93,7 +101,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                         toEntities.push(toUriEntityName(entity));
                     });
 
-                    $scope.filteredToEntities = toEntities
+                    $scope.filteredToEntities = $scope.sortEntities(toEntities);
 
                     $scope.toEntities = $scope.filteredToEntities;
                     if ($scope.toEntities) {
