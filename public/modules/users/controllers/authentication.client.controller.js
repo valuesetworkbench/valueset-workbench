@@ -15,6 +15,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
         	$scope.providers = response;
         });
 
+        $http.get('/auth_enabled').success(function(response) {
+            $scope.enabled = response;
+        });
+
 		$scope.signin = function() {
 			var redirect = $location.search().redirect;
 

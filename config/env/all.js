@@ -32,26 +32,31 @@ module.exports = {
 		url: process.env.VALUESET_METRICS_URL || 'http://localhost:8184/'
 	},
 	facebook: {
+		enabled: process.env.FACEBOOK_ENABLED || false,
 		clientID: process.env.FACEBOOK_ID || 'APP_ID',
 		clientSecret: process.env.FACEBOOK_SECRET || 'APP_SECRET',
 		callbackURL: '/auth/facebook/callback'
 	},
 	twitter: {
+        enabled: process.env.TWITTER_ENABLED || false,
 		clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',
 		clientSecret: process.env.TWITTER_SECRET || 'CONSUMER_SECRET',
 		callbackURL: '/auth/twitter/callback'
 	},
 	google: {
+        enabled: process.env.GOOGLE_ENABLED || false,
 		clientID: process.env.GOOGLE_ID || 'xxxx',
 		clientSecret: process.env.GOOGLE_SECRET || 'xxxx',
 		callbackURL: '/auth/google/callback'
 	},
 	linkedin: {
+        enabled: process.env.LINKEDIN_ENABLED || false,
 		clientID: process.env.LINKEDIN_ID || 'APP_ID',
 		clientSecret: process.env.LINKEDIN_SECRET || 'APP_SECRET',
 		callbackURL: '/auth/linkedin/callback'
 	},
 	github: {
+        enabled: process.env.GITHUB_ENABLED || false,
 		clientID: process.env.GITHUB_ID || 'xxxx',
 		clientSecret: process.env.GITHUB_SECRET || 'xxxx',
 		callbackURL: '/auth/github/callback'

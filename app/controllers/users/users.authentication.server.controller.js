@@ -160,6 +160,13 @@ exports.getCustomOauth = function(req, res) {
     res.send(exports.configs);
 }
 
+exports.getOauthEnabled = function(req, res) {
+    res.send({
+        github: config.github.enabled,
+        google: config.google.enabled
+	});
+};
+
 /**
  * OAuth callback
  */

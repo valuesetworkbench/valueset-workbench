@@ -3,7 +3,8 @@
 /**
  * Module dependencies.
  */
-var passport = require('passport');
+var passport = require('passport'),
+	config = require('../../config/config');
 
 module.exports = function(app) {
 	// User Routes
@@ -26,32 +27,42 @@ module.exports = function(app) {
 	app.route('/auth/signin').post(users.adminSignin);
 	app.route('/auth/signout').get(users.signout);
 
-	// Setting the facebook oauth routes
-	app.route('/auth/facebook').get(passport.authenticate('facebook', {
-		scope: ['email']
-	}));
-	app.route('/auth/facebook/callback').get(users.oauthCallback('facebook'));
+	if (config.facebook.enabled) {
+        // Setting the facebook oauth routes
+        app.route('/auth/facebook').get(passport.authenticate('facebook', {
+            scope: ['email']
+        }));
+        app.route('/auth/facebook/callback').get(users.oauthCallback('facebook'));
+    }
 
-	// Setting the twitter oauth routes
-	app.route('/auth/twitter').get(passport.authenticate('twitter'));
-	app.route('/auth/twitter/callback').get(users.oauthCallback('twitter'));
+    if (config.twitter.enabled) {
+        // Setting the twitter oauth routes
+        app.route('/auth/twitter').get(passport.authenticate('twitter'));
+        app.route('/auth/twitter/callback').get(users.oauthCallback('twitter'));
+    }
 
-	// Setting the google oauth routes
-	app.route('/auth/google').get(passport.authenticate('google', {
-		scope: [
-			'https://www.googleapis.com/auth/userinfo.profile',
-			'https://www.googleapis.com/auth/userinfo.email'
-		]
-	}));
-	app.route('/auth/google/callback').get(users.oauthCallback('google'));
+    if (config.google.enabled) {
+        // Setting the google oauth routes
+        app.route('/auth/google').get(passport.authenticate('google', {
+            scope: [
+                'https://www.googleapis.com/auth/userinfo.profile',
+                'https://www.googleapis.com/auth/userinfo.email'
+            ]
+        }));
+        app.route('/auth/google/callback').get(users.oauthCallback('google'));
+    }
 
-	// Setting the linkedin oauth routes
-	app.route('/auth/linkedin').get(passport.authenticate('linkedin'));
-	app.route('/auth/linkedin/callback').get(users.oauthCallback('linkedin'));
+    if (config.linkedin.enabled) {
+        // Setting the linkedin oauth routes
+        app.route('/auth/linkedin').get(passport.authenticate('linkedin'));
+        app.route('/auth/linkedin/callback').get(users.oauthCallback('linkedin'));
+    }
 
-	// Setting the github oauth routes
-	app.route('/auth/github').get(passport.authenticate('github'));
-	app.route('/auth/github/callback').get(users.oauthCallback('github'));
+    if (config.github.enabled) {
+        // Setting the github oauth routes
+        app.route('/auth/github').get(passport.authenticate('github'));
+        app.route('/auth/github/callback').get(users.oauthCallback('github'));
+    }
 
     app.get('/auth/:strategy', function(req, res, next) {
         var strategy = req.params.strategy;
@@ -69,6 +80,7 @@ module.exports = function(app) {
     });
 
     app.route('/auth_providers').get(users.getCustomOauth);
+    app.route('/auth_enabled').get(users.getOauthEnabled);
 
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);
