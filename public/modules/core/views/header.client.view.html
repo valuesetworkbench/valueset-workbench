@@ -58,7 +58,7 @@
 		</ul>
 
         <ul class="nav navbar-nav navbar-right nav-pills" data-ng-init="find()">
-			<li ui-route="/admin">
+			<li data-ng-show="authentication.user" ui-route="/admin">
 				<a href="/#!/admin"><i class="fa fa-gear" aria-hidden="true"></i> Admin</a>
 			</li>
             <li data-ng-show="authentication.user">
