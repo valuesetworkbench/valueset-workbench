@@ -16,6 +16,28 @@ angular.module('core')
             controller: function($scope, $http, $location, $injector, $timeout, Authentication, Groups){
                 $scope.authentication = Authentication;
 
+                $scope.listTour = {
+                    steps: [
+                        {
+                            element: "#resource-list",
+                            intro: "All available items will be listed here.",
+                            position: "top"
+                        },
+                        {
+                            element: "#resource-list-filter",
+                            intro: "You can filter the list by typing here."
+                        },
+                        {
+                            element: "#create-resource-button",
+                            intro: "Or you can create a new one."
+                        }
+                    ]
+                };
+
+                $scope.onComplete = function() {
+                    $location.search("tour", null);
+                };
+
                 var service = $injector.get($scope.service);
 
                 // Find a list of Valuesets

@@ -9,15 +9,15 @@
             </span>
 
             <h1>All {{ display }}s</h1>
-            <a id="create-valuesetdefinition-button" class="btn btn-primary" ng-href="/#!/{{ resourceName }}s-create"
+            <a id="create-resource-button" class="btn btn-primary" ng-href="/#!/{{ resourceName }}s-create"
                data-ng-disabled="! canCreate">
                 New {{ display }} <i class="glyphicon glyphicon-edit"></i>
             </a>
         </div>
 
-        <div id="valuesetdefinition-list" class="list-groups" data-ng-show="! loading">
+        <div id="resource-list" class="list-groups" data-ng-show="! loading">
             <form class="form-search form-inline">
-                <input  id="valuesetdefinition-list-filter" ng-model="query" type="text" class="form-control search-query"
+                <input  id="resource-list-filter" ng-model="query" type="text" class="form-control search-query"
                         placeholder="Filter by" ng-model-options="{debounce: 250}">
             </form>
             <div data-ng-repeat="(entry, versions) in entries" class="search-group">
