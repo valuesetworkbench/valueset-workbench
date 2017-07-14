@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$rootScope', 'Authentication', 'Menus', 'NotificationObservable',
-	function($scope, $rootScope, Authentication, Menus, NotificationObservable) {
+angular.module('core').controller('HeaderController', ['$scope', '$rootScope', 'Authentication', 'Menus', 'NotificationObservable', 'Config',
+	function($scope, $rootScope, Authentication, Menus, NotificationObservable, Config) {
 		$scope.authentication = Authentication;
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
@@ -19,6 +19,11 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
 		$scope.$on('$stateChangeSuccess', function() {
 			$scope.isCollapsed = false;
 		});
+
+		var header = Config.getHeader();
+        $scope.headerOn = header.headerOn;
+		$scope.headerLabelType = header.headerType;
+        $scope.headerLabelMsg = header.headerMsg;
 
 		/* Maybe resize this on scroll? Not sure...
 		$(window).scroll(function() {

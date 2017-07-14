@@ -12,7 +12,8 @@ exports.index = function(req, res) {
 		config: {
 			resourceUriBase: config.resourceUriBase,
 			cts2ServiceRoot: config.cts2.url,
-			approvalPredicateUri: constants.approvalPredicateUri
+			approvalPredicateUri: constants.approvalPredicateUri,
+			header: config.header
 		}
 	});
 };

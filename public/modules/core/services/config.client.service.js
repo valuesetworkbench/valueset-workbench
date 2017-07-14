@@ -17,5 +17,9 @@ angular.module('core').service('Config', [
 			return config.approvalPredicateUri;
 		}
 
+        this.getHeader = function() {
+            return config.header;
+        }
+
 	}
 ]);

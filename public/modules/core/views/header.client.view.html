@@ -1,5 +1,9 @@
 <div class="container" data-ng-controller="HeaderController">
 
+    <div ng-if="headerOn" class="header-alert">
+        <h4><span class="label header-alert-label" ng-class="'label-' + headerLabelType">{{headerLabelMsg}}</span></h4>
+    </div>
+
 	<div class="navbar-header">
 		<button class="navbar-toggle" type="button" data-ng-click="toggleCollapsibleMenu()">
 			<span class="sr-only">Toggle navigation</span>
@@ -8,6 +12,7 @@
 			<span class="icon-bar"></span>
 		</button>
 		<a href="/#!/" class="navbar-brand"><img id="header-logo" class="header-logo-small" src="/modules/core/img/brand/vsw_logo.png"></a>
+
 	</div>
 
     <nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
@@ -26,6 +31,7 @@
 				<a ng-switch-default href="/#!/{{item.link}}" data-ng-bind="item.title"></a>
 			</li>
 		</ul>
+
 
         <ul class="nav navbar-nav navbar-right" data-ng-hide="authentication.user">
 			<!--

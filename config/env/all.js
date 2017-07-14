@@ -15,6 +15,11 @@ module.exports = {
 		description: 'Value Set Workbench',
 		keywords: 'CTS2'
 	},
+    header: {
+        headerOn: process.env.HEADER_ON,
+        headerType: process.env.HEADER_TYPE,
+        headerMsg: process.env.HEADER_MSG
+    },
 	resourceUriBase: "http://terms.mayo.edu/",
     cts2: {
 		url: process.env.CTS2_URL || 'http://localhost:8080/'

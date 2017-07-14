@@ -266,6 +266,20 @@ label {
     height: 150px;
 }
 
+.header-alert {
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%)
+}
+
+.header-alert-label {
+    display: block;
+    text-align: left;
+    width: 300px;
+    white-space: normal;
+}
+
 .tab {
     height: 40px;
     width: 100%;
