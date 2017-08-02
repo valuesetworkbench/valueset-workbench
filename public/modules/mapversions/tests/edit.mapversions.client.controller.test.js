@@ -71,6 +71,9 @@
                             valueSetDefinition: {
                                 href: "http://to"
                             }
+                        },
+                        versionOf: {
+                            content: "test"
                         }
                     }
                 }
@@ -113,6 +116,9 @@
                             valueSetDefinition: {
                                 href: "http://to"
                             }
+                        },
+                        versionOf: {
+                            content: "test"
                         }
                     }
                 }

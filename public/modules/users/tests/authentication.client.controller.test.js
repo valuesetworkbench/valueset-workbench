@@ -49,7 +49,13 @@
 
 		it('$scope.signin() should fail to log in with nothing', function() {
 			// Test expected POST request
+
             $httpBackend.expectGET('/auth_providers').respond(200, []);
+
+            $httpBackend.expectGET('/auth_enabled').respond(200, {
+                github: false,
+                google: false
+            });
 
 			$httpBackend.expectPOST('/auth/signin').respond(400, {
 				'message': 'Missing credentials'
@@ -68,6 +74,11 @@
 			scope.credentials = 'Bar';
 
             $httpBackend.expectGET('/auth_providers').respond(200, []);
+
+            $httpBackend.expectGET('/auth_enabled').respond(200, {
+                github: false,
+                google: false
+            });
 
 			// Test expected POST request
 			$httpBackend.expectPOST('/auth/signin').respond(400, {

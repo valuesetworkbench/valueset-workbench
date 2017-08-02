@@ -8,5 +8,10 @@ module.exports = {
 	},
 	email: {
 		enabled: false
-	}
+	},
+    header: {
+        headerOn: false,
+        headerType: "",
+        headerMsg: ""
+    },
 };

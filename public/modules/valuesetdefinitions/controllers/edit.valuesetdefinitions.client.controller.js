@@ -97,6 +97,14 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
                 }
 
                 $scope.calculateWarnings();
+
+                var definitionId = $scope.id.substr($scope.id.lastIndexOf('/') + 1);
+
+                $scope.api = [
+                    {name: "Retrieve a Value Set (simple)", method: "GET", type: "local", url: "api/valueset/" + $scope.valuesetdefinition.definedValueSet.content + "/" + definitionId, description: "Fetch the value set codes."},
+                    {name: "Retrieve a Value Set (CTS2 format)", method: "GET", type: "cts2", url: $scope.id + "?format=json", description: "Fetch the value set in CTS2 format."}
+                ];
+
             });
         };
 

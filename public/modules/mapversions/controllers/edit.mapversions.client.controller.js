@@ -15,11 +15,6 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
         $scope.id = decodeURIComponent($stateParams.mapversionId);
 
-        $scope.api = [
-            {name: "Retrieve a Map", method: "GET", url: $scope.id, description: "Fetch the Map metadata (such as name and description)."},
-            {name: "Retrieve Map Entries", method: "GET", url: $scope.id + '/entries?list=true', description: "Fetch the Concept -> Concept mappings."}
-        ];
-
         $scope.open = $scope.isNew = !($scope.id && $scope.id != 'undefined');
 
         $scope.authentication = Authentication;
@@ -339,6 +334,13 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                 $scope.mapVersion = mapVersion.MapVersionMsg.mapVersion;
                 $scope.permissions = mapVersion.permissions;
                 $scope.loading = false;
+
+
+                $scope.api = [
+                    {name: "Retrieve a Map (CTS2)", method: "GET", type: "cts2", url: $scope.id + "?format=json", description: "Fetch the Map metadata (such as name and description)."},
+                    {name: "Retrieve Map Entries (simple)", method: "GET", type: "local", url: 'api/map/' + $scope.mapVersion.versionOf.content + "/" + $scope.mapVersion.mapVersionName, description: "Fetch the Concept -> Concept mappings."},
+                    {name: "Retrieve Map Entries (CTS2)", method: "GET", type: "cts2", url: $scope.id + '/entries?list=true&format=json', description: "Fetch the Concept -> Concept mappings."}
+                ];
 
                 var entriesHref = $scope.id + "/entries?list=true";
                 Mapversions.getEntries(encodeURIComponent(entriesHref), function (response) {

@@ -6,11 +6,29 @@
 </div>
 <div class="modal-body">
     <div ng-repeat="entry in api" class="api-row">
-        <h4>{{ entry.name }}</h4>
+        <h4><img ng-if="entry.type == 'cts2'" height="35px" src="/modules/core/img/brand/cts2-thin.png"> {{ entry.name }}</h4>
         <div><em>{{ entry.description }}</em></div>
         <div>
             <span class="label label-primary">{{ entry.method }}</span>
-            <code>{{ addJsonParam( getProxyUrl(entry.url)) }}</code>
+            <code>{{ getUrl(entry) }}</code>
+        </div>
+    </div>
+
+    <hr>
+
+    <div align="center">
+        <h3>Security</h3>
+        <p>
+            All REST calls must include an <code>ApiKey</code> header.
+        </p>
+        <div class="form-group">
+            <button ng-click="showKey = !showKey" class="btn btn-xs btn-primary">
+                <span ng-if="showKey">Hide API Key</span>
+                <span ng-if="!showKey">Show API Key</span>
+            </button>
+            <div>
+                <code ng-if="showKey">{{user.apiKey}}</code>
+            </div>
         </div>
     </div>
 </div>

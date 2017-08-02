@@ -20,10 +20,19 @@ angular.module('core')
                 }
             }
         }
-    }]).controller('api-modalCtrl', function ($scope, $modalInstance, Config, data) {
+    }]).controller('api-modalCtrl', function ($scope, $modalInstance, Config, Authentication, data) {
 
-        $scope.getProxyUrl = function(url) {
-            return url.replace(Config.getCts2ServiceRoot(), window.location.origin + "/cts2/");
+        $scope.user = Authentication.user;
+
+        $scope.getUrl = function(entry) {
+            var url = entry.url;
+            if (entry.type == "local") {
+                return window.location.origin + "/" + url;
+            }
+
+            if (entry.type == "cts2") {
+                return url.replace(Config.getCts2ServiceRoot(), window.location.origin + "/cts2/");
+            }
         }
 
         // http://stackoverflow.com/a/6021027/656853

@@ -58,7 +58,19 @@
 
 		it('$scope.findOne() should create an array with one ValueSetDefinition object fetched from XHR using a id URL parameter', inject(function (Mapversions) {
 			// Define a sample Mapversion object
-			var sampleValueSetDefinition = {ValueSetDefinitionMsg: {heading: {resourceRoot: "http://test"}, valueSetDefinition: {about: "test", keyword: []}}};
+			var sampleValueSetDefinition = {
+				ValueSetDefinitionMsg: {
+					heading: {
+						resourceRoot: "http://test"
+					},
+					valueSetDefinition: {
+						about: "test", keyword: [],
+                        definedValueSet: {
+							content: "test"
+                        }
+					}
+				}
+			};
 
 			// Set the URL parameter
 			scope.valuesetdefinitionId = encodeURIComponent('http://test/mv');
@@ -77,9 +89,21 @@
 
 		it('$scope.save() should redirect if permissions no longer include "Edit" ', inject(function (Mapversions) {
 			// Define a sample Mapversion object
-			var sampleValueSetDefinition = {ValueSetDefinitionMsg: {heading: {resourceRoot: "http://test"}, valueSetDefinition: {about: "test", keyword: []}}};
+            var sampleValueSetDefinition = {
+                ValueSetDefinitionMsg: {
+                    heading: {
+                        resourceRoot: "http://test"
+                    },
+                    valueSetDefinition: {
+                        about: "test", keyword: [],
+                        definedValueSet: {
+                            content: "test"
+                        }
+                    }
+                }
+            };
 
-			scope.id = 'http://test/vs';
+            scope.id = 'http://test/vs';
 
 			$stateParams.valuesetdefinitionId = encodeURIComponent(scope.id);
 

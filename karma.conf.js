@@ -10,7 +10,8 @@ module.exports = function(config) {
 	// PhantomJS Shim - http://stackoverflow.com/questions/27659514/phantomjs-function-prototype-bind
 	var shims = [
 		'public/lib/phantomjs-polyfill/bind-polyfill.js',
-        'node_modules/babel-polyfill/dist/polyfill.js',];
+        'node_modules/babel-polyfill/dist/polyfill.js',
+        'public/modules/core/tests/test.config.js'];
 
 	config.set({
 		// Frameworks to use
