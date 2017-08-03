@@ -51,11 +51,16 @@ angular.module('mapversions').controller('CreateMapversionsController', ['$scope
             };
 
             Mapversions.new({MapVersion: mapVersion}, function (response) {
-                    var location = encodeURIComponent(Utils.removeURLParameter(response.data.headers.location, 'changesetcontext'));
+                    var statusCode = response.data.statusCode;
+                    if (statusCode === 409) {
+                        Notification.error('Map with name `' + $scope.name + '` already exists.');
+                    } else {
+                        var location = encodeURIComponent(Utils.removeURLParameter(response.data.headers.location, 'changesetcontext'));
 
-                    $location.path('/mapversions/' + location + '/edit');
+                        $location.path('/mapversions/' + location + '/edit');
 
-                    Notification.success('Map Version Saved');
+                        Notification.success('Map Version Saved');
+                    }
                 });
 
             HistoryChange.onHistoryChange();
