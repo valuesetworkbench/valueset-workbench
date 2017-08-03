@@ -572,7 +572,7 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
 
     $scope.getChildren = function (entity, idx) {
         function setDataChildren(children, idx) {
-            if (children && children.lengh > 0) {
+            if (children && children.length > 0) {
                 var nodes = [{
                     name: entity.name.name,
                     designation: entity.knownEntityDescription[0].designation,
