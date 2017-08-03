@@ -156,7 +156,6 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                     if (mapEntry.href) {
                         Mapversions.deleteMapEntry(mapEntry.href, function () {
                             Notification.error('MapEntry Deleted');
-                            resolve();
                         });
                     }
                 } else {
