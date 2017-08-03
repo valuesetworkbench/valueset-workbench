@@ -526,6 +526,7 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
     $scope.options = {
         chart: {
             type: 'forceDirectedGraph',
+            noData: 'No children found.',
             height: 450,
             radius: 10,
             linkDist: 200,
@@ -571,29 +572,43 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
 
     $scope.getChildren = function (entity, idx) {
         function setDataChildren(children, idx) {
-            var nodes = [{name: entity.name.name, designation: entity.knownEntityDescription[0].designation, group: 1}];
-            var links = [];
+            if (children && children.lengh > 0) {
+                var nodes = [{
+                    name: entity.name.name,
+                    designation: entity.knownEntityDescription[0].designation,
+                    group: 1
+                }];
+                var links = [];
 
-            angular.forEach(children, function (child, idx) {
-                nodes.push({name: child.name.name, designation: child.knownEntityDescription[0].designation, group: 2})
-                links.push({source: 0, target: idx + 1, value: 1});
-            });
+                angular.forEach(children, function (child, idx) {
+                    nodes.push({
+                        name: child.name.name,
+                        designation: child.knownEntityDescription[0].designation,
+                        group: 2
+                    })
+                    links.push({source: 0, target: idx + 1, value: 1});
+                });
 
-            $scope.dataChildren[idx] = {
-                "nodes": nodes,
-                "links": links
-            };
+                $scope.dataChildren[idx] = {
+                    "nodes": nodes,
+                    "links": links
+                };
+            } else {
+                $scope.dataChildren[idx] = { };
+            }
         }
 
-        if (childrenCache[idx]) {
-            setDataChildren(childrenCache[idx], idx);
+        if (childrenCache[entity.about]) {
+            setDataChildren(childrenCache[entity.about], idx);
         } else {
+            $scope.childrenLoading = true;
             $http.get('proxy/' + encodeURIComponent(entity.knownEntityDescription[0].href + '/children')).
                 then(function (data) {
 
-                    var children = data.data.EntityDirectory.entry;
-                    childrenCache[idx] = children;
+                    var children = data.data.EntityDirectory.entry || [];
+                    childrenCache[entity.about] = children;
                     setDataChildren(children, idx);
+                    $scope.childrenLoading = false;
                 })
         }
     };
@@ -609,6 +624,8 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
             callback(entity, $scope.selectedSearchSpecification.selected);
             $scope.done();
         }
+
+        data.setDirty();
     };
 
     $scope.searchTextChange = function (q, href) {

@@ -15,7 +15,7 @@
                         <ui-select ng-model="selectedSearchSpecification.selected" theme="bootstrap">
                             <ui-select-match placeholder="Select or search type...">{{$select.selected.formalName}}</ui-select-match>
                             <ui-select-choices repeat="item in codeSystemVersions | filter: {formalName: $select.search}">
-                                <div ng-bind-html="item.formalName | highlight: $select.search"></div>
+                                <b><div ng-bind-html="item.formalName | highlight: $select.search"></div></b>
                                 <em><small ng-bind-html="item.resourceSynopsis.value"></small></em>
                             </ui-select-choices>
                         </ui-select>
@@ -37,26 +37,30 @@
                                 {{entity.name.name}} <small>({{entity.name.namespace}})</small>
                             </h4>
                             <em>{{entity.knownEntityDescription[0].designation}}</em>
-
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <a class="btn" ng-click="toggleChildren(entity, $index)"><i class="fa fa-sitemap" aria-hidden="true"></i>
-                                        {{ canShowChildren($index) ? 'hide children' : 'show children' }}</a>
-                                </div>
-                            </div>
-
-                            <div ng-show="canShowChildren($index)"; class="row">
-                                <div class="col-md-10">
-                                    <nvd3 options="options" data="dataChildren[$index]" deepWatchDataDepth="0"></nvd3>
-                                </div>
-                            </div>
                         </div>
-
                         <div class="col-md-2">
                             <a ng-show="! alreadyAdded[entity.about]" class="btn btn-primary col-6 pull-right" ng-click="addEntityFromSearch(entity)">
                                 <i class="glyphicon glyphicon-plus"></i>
                             </a>
                             <span class="pull-right already-added-text" ng-show="alreadyAdded[entity.about]">Added!</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a class="btn" ng-click="toggleChildren(entity, $index)"><i class="fa fa-sitemap" aria-hidden="true"></i>
+                                {{ canShowChildren($index) ? 'hide children' : 'show children' }}</a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div ng-show="canShowChildren($index)";>
+                            <div>
+                                <nvd3 options="options" data="dataChildren[$index]" deepWatchDataDepth="0"></nvd3>
+                            </div>
+                            <div ng-show="childrenLoading">
+                                <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
+                            </div>
                         </div>
 
                     </div>
