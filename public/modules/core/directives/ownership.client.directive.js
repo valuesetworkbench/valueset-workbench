@@ -75,6 +75,10 @@ angular.module('core')
                     });
 
                     $scope.groups = sourceAndRoles;
+
+                    if ($scope.groups.length == 1) {
+                        $scope.selected.sourceAndRole = $scope.groups[0];
+                    }
                 });
 
                 $scope.filterExisting = function () {
