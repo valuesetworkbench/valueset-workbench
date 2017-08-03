@@ -120,6 +120,17 @@ select.form-control {
 }
 */
 
+.ui-select-bootstrap .ui-select-choices-row > a{
+    white-space: normal;
+}
+
+.ui-select-match-text{
+    display:inline-block;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    width:95%;
+}
+
 .tab-pane {
     padding-top: 10px;
 }

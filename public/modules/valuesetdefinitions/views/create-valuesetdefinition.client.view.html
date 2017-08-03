@@ -1,24 +1,27 @@
 <section data-ng-controller="CreateValuesetdefinitionsController">
     <div class="container">
 
-        <div class="page-header">
+        <div class="page-header row">
             <h2>Create a New Value Set</h2>
         </div>
 
-        <div class="col-md-12">
-
+        <div class="row">
             <form class="form" name="valueSetDefinitionForm" novalidate>
 
-                <div>
-                    <label class="control-label" for="Name">Name:
-                    </label>
-                    <div class="controls">
-                        <input min="1" type="text" data-ng-model="name" id="Name" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Group:</label>
-                            <ownership resource="valueSetDefinition"></ownership>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="Name">Name:
                         </label>
+                        <div class="controls">
+                            <input min="1" type="text" data-ng-model="name" id="Name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="description">Group:</label>
+                                <ownership resource="valueSetDefinition"></ownership>
+                            </label>
+                        </div>
                     </div>
                 </div>
 
