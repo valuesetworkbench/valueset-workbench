@@ -2,16 +2,20 @@
 
     <div class="container">
         <div class="page-header row">
+            <div class="col-md-4">
             <h2>{{ mapVersion.versionOf.content }}</h2>
-
-            <h4>
-                <span style="vertical-align: middle;"><b>Version: </b> {{ mapVersion.officialResourceVersionId }}</span>
-                <switch-versions
-                        href="{{ id }}"
-                        current="mapVersion"
-                        directory="MapVersionDirectory"
-                        resource-name="mapversion"></switch-versions>
-            </h4>
+                <h4>
+                    <span style="vertical-align: middle;"><b>Version: </b> {{ mapVersion.officialResourceVersionId }}</span>
+                    <switch-versions
+                            href="{{ id }}"
+                            current="mapVersion"
+                            directory="MapVersionDirectory"
+                            resource-name="mapversion"></switch-versions>
+                </h4>
+            </div>
+            <div class="col-md-4">
+                <history resource="{{ id }}" to-string-fn=toString/>
+            </div>
         </div>
 
         <div>
@@ -64,12 +68,6 @@
                         </li>
                     </ul>
                 </div>
-
-                <!-- this looks out of place and odd... move it yo.
-                <div>
-                    <history resource="{{ id }}"></history>
-                </div>
-                -->
 
                 <div class="row">
                     <div class="panel panel-default">

@@ -26,7 +26,7 @@ exports.create = function(req, res) {
             'accept': 'application/json',
             'content-type': 'application/json'
         },
-        body: JSON.stringify(valueset),
+        body: JSON.stringify(util.addChangeMetadata(req.user, valueset)),
         url: util.stripTrailingSlash(config.cts2.url) + '/valuesetdefinition?changesetcontext=foo'
     }, function(error, response, body){
         res.send(response)

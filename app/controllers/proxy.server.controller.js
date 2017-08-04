@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
     request = require('request'),
     config = require('../../config/config'),
 	errorHandler = require('./errors'),
+    util = require('../core/util'),
 	_ = require('lodash'),
     users = require('./users'),
     NodeCache = require('node-cache'),
@@ -37,7 +38,7 @@ exports.proxyPost = function(req, res) {
             'content-type': 'application/json'
         },
         url: url,
-        body: JSON.stringify(req.body)
+        body: JSON.stringify(util.addChangeMetadata(req.user, req.body))
     }).pipe(res);
 };
 
@@ -50,7 +51,7 @@ exports.proxyPut = function(req, res, next) {
                 'content-type': 'application/json'
             },
             url: url,
-            body: JSON.stringify(req.body)
+            body: JSON.stringify(util.addChangeMetadata(req.user, req.body))
         }, function (error, response, body) {
             res.send(req.permissions);
         });

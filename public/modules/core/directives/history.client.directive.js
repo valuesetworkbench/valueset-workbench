@@ -1,18 +1,19 @@
 'use strict';
 
 angular.module('core')
-    .directive('history',['$http', 'HistoryChange', function() {
+    .directive('history',['$http', 'HistoryChange', 'Users', 'dialogs', function() {
         return {
             templateUrl:'modules/core/directives/history.client.view.html',
             restrict: 'E',
             replace: true,
             scope: {
-                resource: '@resource'
+                resource: '@resource',
+                toStringFn: '&'
             },
-            controller: function($scope, $http, HistoryChange){
+            controller: function($scope, $http, HistoryChange, Users, dialogs){
                 $scope.getHistory = function() {
                     $http.get("/proxy/" + encodeURIComponent($scope.resource + "/changehistory")).then(function(response) {
-                        $scope.changeHistory = response.data.MapVersionList.entry;
+                        $scope.changeHistory = response.data[Object.keys(response.data)[0]].entry;
                     });
                 };
 
@@ -21,6 +22,26 @@ angular.module('core')
                 });
 
                 $scope.getHistory();
+
+                $scope.diff = function(change) {
+                    dialogs.create('/modules/core/directives/diff.client.modal.html', 'DiffController',
+                        {
+                            "from": $scope.toStringFn()(change),
+                            "to": $scope.toStringFn()()
+                        });
+                }
+
+                $scope.getUserDetails = function(change) {
+                    if (change.changeDescription && change.changeDescription.changeSource && change.changeDescription.changeSource.content) {
+                        Users.query({email: change.changeDescription.changeSource.content}, function (result) {
+                            result = result[0];
+                            change.changeDescription.changeSourceExtra = {
+                                photo: result.photoUrl,
+                                displayName: result.displayName
+                            };
+                        });
+                    }
+                };
             }
         }
     }]);

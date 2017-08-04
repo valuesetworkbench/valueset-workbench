@@ -197,6 +197,13 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
             $scope.mapVersionForm.$setPristine();
         }
 
+        $scope.toString = function(resource) {
+            if(! resource) {
+                return JSON.stringify($scope.mapVersion, null, 2);
+            } else {
+                return JSON.stringify(resource, null, 2);
+            }
+        }
 
         $scope.saveMapVersion = function() {
             $scope.mapVersion.changeDescription = {
@@ -211,11 +218,11 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                 if ($scope.permissions.indexOf("Edit") == -1) {
                     $location.path("/mapversions/" + $stateParams.mapversionid)
                 }
+
+                HistoryChange.onHistoryChange();
             });
 
             $scope.processChanges(changeHolder);
-
-            HistoryChange.onHistoryChange();
         };
 
         $scope.saveMapVersionAs = function () {

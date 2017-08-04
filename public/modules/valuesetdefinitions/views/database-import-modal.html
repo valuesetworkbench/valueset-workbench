@@ -7,20 +7,13 @@
 <div class="modal-body">
 
     <div>
-        <div>
-            <label for="connection">Connection:</label>
-                <ui-select ng-model="selected.connection" name="connection"
-                           theme="bootstrap" >
-                    <ui-select-match placeholder="Connection..."> {{$select.selected.name}}</ui-select-match>
-                    <ui-select-choices repeat="connection in connections | filter: $select.search">
-                        <div ng-bind-html="connection.name | highlight: $select.search"></div>
-                    </ui-select-choices>
-                </ui-select>
-            </label>
-        </div>
 
-        <div id="credentials" ng-show="selected.connection && !connected">
+        <div id="credentials" !connected">
             <div class="form-group">
+                <label for="username">JDBC URL:</label>
+                    <input type="text" ng-model="selected.jdbcUrl" name="jdbcUrl" class="form-control">
+                </label>
+
                 <label for="username">User Name:</label>
                     <input type="text" ng-model="selected.username" name="username" class="form-control">
                 </label>
@@ -31,7 +24,7 @@
         </div>
 
         <div>
-            <button ng-disabled="! selected.connection" ng-show="! connected" type="button" class="btn btn-success" data-ng-click="connect();">
+            <button ng-show="! connected" type="button" class="btn btn-success" data-ng-click="connect();">
                 Connect <i class="fa fa-plug" aria-hidden="true"></i>
             </button>
 

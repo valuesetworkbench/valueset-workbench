@@ -32,3 +32,13 @@ exports.findResource = function (body) {
         return body[msgKey][resourceKey];
     }
 }
+
+exports.addChangeMetadata = function (user, resource) {
+    var resourceKey = Object.keys(resource)[0];
+
+    resource[resourceKey].changeDescription.changeSource = {
+        content: user.email
+    }
+
+    return resource;
+}

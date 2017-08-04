@@ -96,8 +96,19 @@ var UserSchema = new Schema({
 		type: Date,
 		default: Date.now
 	}
+}, {
+    toObject: {
+        virtuals: true
+    },
+    toJSON: {
+        virtuals: true
+    }
 });
 
+UserSchema.virtual('photoUrl')
+    .get(function () {
+        return "photos/" + this.id;
+    });
 
 /**
  * Find possible not used username

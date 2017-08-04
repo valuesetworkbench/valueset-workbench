@@ -13,7 +13,8 @@ module.exports = {
             'public/lib/ng-tags-input/ng-tags-input.bootstrap.min.css',
             'public/lib/font-awesome/css/font-awesome.min.css',
             'public/lib/ment.io/ment.io/styles.css',
-            'public/lib/nvd3/build/nv.d3.css'
+            'public/lib/nvd3/build/nv.d3.css',
+            'public/lib/diff2html/dist/diff2html.css'
         ],
         js: [
             'public/lib/jquery/dist/jquery.min.js',
@@ -52,7 +53,10 @@ module.exports = {
             'public/lib/angular-gage/dist/angular-gage.min.js',
             'public/lib/checklist-model/checklist-model.js',
             'public/lib/showdown/compressed/Showdown.min.js',
-            'public/lib/angular-markdown-directive/markdown.js'
+            'public/lib/angular-markdown-directive/markdown.js',
+            'public/lib/diff2html/dist/diff2html.js',
+            'public/lib/diff2html/dist/diff2html-ui.js',
+            'public/lib/jsdiff/diff.js'
         ]
     }
 }

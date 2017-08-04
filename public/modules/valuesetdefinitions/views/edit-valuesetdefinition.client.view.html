@@ -44,9 +44,7 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li ng-click="importFromSpreadsheet()"><a>From Spreadsheet</a></li>
-                            <!--
                             <li ng-click="importFromDatabase()"><a>From Database</a></li>
-                            -->
                         </ul>
                     </div>
                 </li>
@@ -70,19 +68,25 @@
         </div>
 
         <div class="page-header row">
-            <h2>{{ valuesetdefinition.definedValueSet.content }}</h2>
+            <div class="col-md-8">
+                <h2>{{ valuesetdefinition.definedValueSet.content }}</h2>
 
-            <h4>
-            <span style="vertical-align: middle;"><b>Version: </b> {{ valuesetdefinition.officialResourceVersionId }}</span>
+                <h4>
+                <span style="vertical-align: middle;"><b>Version: </b> {{ valuesetdefinition.officialResourceVersionId }}</span>
 
-            <switch-versions
-                    href="{{ id }}"
-                    current="valuesetdefinition"
-                    directory="ValueSetDefinitionDirectory"
-                    resource-name="valuesetdefinition"></switch-versions>
-
-            </h4>
+                <switch-versions
+                        href="{{ id }}"
+                        current="valuesetdefinition"
+                        directory="ValueSetDefinitionDirectory"
+                        resource-name="valuesetdefinition"></switch-versions>
+                </h4>
+            </div>
+            <div class="col-md-4">
+                <history resource="{{ id }}" to-string-fn="toString"/>
+            </div>
         </div>
+
+
 
         <div class="row">
 
@@ -189,9 +193,9 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li ng-click="importFromSpreadsheet(entry)"><a>From Spreadsheet</a></li>
-                                                        <!--
+
                                                         <li ng-click="importFromDatabase()"><a>From Database</a></li>
-                                                        -->
+
                                                     </ul>
                                                 </div>
                                             </div>

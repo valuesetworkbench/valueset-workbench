@@ -1,8 +1,8 @@
 'use strict';
 
 // Valuesets controller
-angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsController', ['$scope', '$http', '$document', '$stateParams', '$location', 'dialogs', 'Authentication', 'Valuesetdefinitions', 'Mapversions', 'Notification', '$timeout', 'Utils',
-    function ($scope, $http, $document, $stateParams, $location, dialogs, Authentication, Valuesetdefinitions, Mapversions, Notification, $timeout, Utils) {
+angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsController', ['$scope', '$http', '$document', '$stateParams', '$location', 'dialogs', 'Authentication', 'Valuesetdefinitions', 'Mapversions', 'Notification', 'HistoryChange', '$timeout', 'Utils',
+    function ($scope, $http, $document, $stateParams, $location, dialogs, Authentication, Valuesetdefinitions, Mapversions, Notification, HistoryChange, $timeout, Utils) {
 
         $scope.id = decodeURIComponent($stateParams.valuesetdefinitionId);
 
@@ -50,6 +50,14 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
                 {
                     warnings: $scope.warnings
                 });
+        }
+
+        $scope.toString = function(resource) {
+            if(! resource) {
+                return JSON.stringify($scope.valuesetdefinition, null, 2);
+            } else {
+                return JSON.stringify(resource, null, 2);
+            }
         }
 
         $scope.calculateWarnings = function (forceRefresh) {
@@ -171,48 +179,47 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
                 }
 
                 clearNewMarker($scope.valuesetdefinition.entry);
+
+                HistoryChange.onHistoryChange();
             });
         };
 
         $scope.saveAs = function () {
-            if ($scope.valuesetdefinition.about.startsWith(config.resourceUriBase)) {
-                var dlg = dialogs.create('/modules/core/views/saveas-modal.html', 'vsd-saveAsCtrl', {});
-                dlg.result.then(function (data) {
-                    var version = data.version,
-                        description = data.description;
+            var dlg = dialogs.create('/modules/core/views/saveas-modal.html', 'vsd-saveAsCtrl', {});
+            dlg.result.then(function (data) {
+                var version = data.version,
+                    description = data.description;
 
-                    $scope.valuesetdefinition.officialResourceVersionId = version;
+                $scope.valuesetdefinition.officialResourceVersionId = version;
 
-                    if (description) {
-                        $scope.valuesetdefinition.resourceSynopsis = {value: description};
+                if (description) {
+                    $scope.valuesetdefinition.resourceSynopsis = {value: description};
+                }
+
+                var about = $scope.valuesetdefinition.about;
+                var newAbout = about.substr(0, about.lastIndexOf('/')) + '/' + version;
+
+                angular.forEach($scope.valuesetdefinition.entry, function (entry) {
+                    if (entry.entity) {
+                        angular.forEach(entry.entity.referencedEntity, function (entity) {
+                            if ($scope.isCustomCode(entity)) {
+                                entity.uri = entity.uri.replace(about, newAbout);
+                            }
+                        })
                     }
-
-                    var about = $scope.valuesetdefinition.about;
-                    var newAbout = about.substr(0, about.lastIndexOf('/')) + '/' + version;
-
-                    angular.forEach($scope.valuesetdefinition.entry, function (entry) {
-                        if (entry.entity) {
-                            angular.forEach(entry.entity.referencedEntity, function (entity) {
-                                if ($scope.isCustomCode(entity)) {
-                                    entity.uri = entity.uri.replace(about, newAbout);
-                                }
-                            })
-                        }
-                    });
-
-                    $scope.valuesetdefinition.about = newAbout;
-
-                    Valuesetdefinitions.new({ValueSetDefinition: $scope.valuesetdefinition}, function (response) {
-                        Notification.success('New ValueSetDefinition Created');
-
-                        var location = encodeURIComponent(Utils.removeURLParameter(response.data.headers.location, 'changesetcontext'));
-
-                        $location.path('/valuesetdefinitions/' + location + '/edit');
-                    });
-
                 });
 
-            }
+                $scope.valuesetdefinition.about = newAbout;
+
+                Valuesetdefinitions.new({ValueSetDefinition: $scope.valuesetdefinition}, function (response) {
+                    Notification.success('New ValueSetDefinition Created');
+
+                    var location = encodeURIComponent(Utils.removeURLParameter(response.data.headers.location, 'changesetcontext'));
+
+                    $location.path('/valuesetdefinitions/' + location + '/edit');
+                });
+
+            });
 
         };
 
@@ -765,8 +772,6 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
 
 }).controller('vsd-databaseImportCtrl', function ($log, $http, $timeout, $scope, $modalInstance, Connections, DatabaseExplorer, data) {
 
-    $scope.connections = Connections.query();
-
     $scope.selected = {};
 
     $scope.connected = false;
@@ -776,9 +781,10 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
     $scope.connect = function () {
         $scope.connectionError = null;
 
-        var connectionCopy = angular.copy($scope.selected.connection);
+        var connectionCopy = {};
         connectionCopy.username = $scope.selected.username;
         connectionCopy.password = $scope.selected.password;
+        connectionCopy.jdbcUrl = $scope.selected.jdbcUrl;
 
         DatabaseExplorer.tables(connectionCopy, function (response, error) {
             if (!error) {
@@ -850,9 +856,10 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
         } else {
             indexes.sort();
 
-            var connectionCopy = angular.copy($scope.selected.connection);
+            var connectionCopy = {};
             connectionCopy.username = $scope.selected.username;
             connectionCopy.password = $scope.selected.password;
+            connectionCopy.jdbcUrl = $scope.selected.jdbcUrl;
 
             DatabaseExplorer.query($scope.selected.table, columns, connectionCopy, function (response) {
                 var result = [];
@@ -873,9 +880,10 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
 
     $scope.$watch("selected.table", function (newValue) {
         if (newValue) {
-            var connectionCopy = angular.copy($scope.selected.connection);
+            var connectionCopy = {};
             connectionCopy.username = $scope.selected.username;
             connectionCopy.password = $scope.selected.password;
+            connectionCopy.jdbcUrl = $scope.selected.jdbcUrl;
 
             DatabaseExplorer.columns($scope.selected.table, connectionCopy, function (response) {
                 $scope.columns = response;

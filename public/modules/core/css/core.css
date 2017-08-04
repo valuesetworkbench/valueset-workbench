@@ -120,6 +120,17 @@ select.form-control {
 }
 */
 
+.history-container-position {
+    position: fixed;
+    top: 51px;
+    right: 0px;
+    z-index: 1000;
+}
+
+.history-container-position > * {
+    border-radius: 0 !important;
+}
+
 .ui-select-bootstrap .ui-select-choices-row > a{
     white-space: normal;
 }

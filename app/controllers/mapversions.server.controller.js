@@ -24,11 +24,10 @@ exports.create = function(req, res) {
             'accept': 'application/json',
             'content-type': 'application/json'
         },
-        body: JSON.stringify(mapVersion),
+        body: JSON.stringify(util.addChangeMetadata(req.user, mapVersion)),
         url: util.stripTrailingSlash(config.cts2.url) + '/mapversion?changesetcontext=foo'
     }, function(error, response, body){
         if(error) {
-            console.log("HERE"+error)
             res.status(500).send({
                 message: errorHandler.getErrorMessage(error)
             })

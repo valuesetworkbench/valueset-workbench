@@ -22,8 +22,7 @@ var adminUser = {
 	lastName: 'admin',
 	displayName: 'Administrator',
 	provider: 'admin',
-	roles: ['admin'],
-	photo: 'modules/users/img/administrator.jpg'
+	roles: ['admin']
 };
 
 User.findOne({

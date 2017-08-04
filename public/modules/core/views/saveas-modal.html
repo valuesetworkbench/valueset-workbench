@@ -7,16 +7,17 @@
 </div>
 <div class="modal-body">
 
+    <form name="saveasform">
+        <label class="control-label" for="username">Version Name:</label>
+        <input type="text" class="form-control" name="version" id="version" ng-model="version" required>
+        <span class="help-block">Enter the version name.</span>
 
-    <label class="control-label" for="username">Version Name:</label>
-    <input type="text" class="form-control" name="version" id="version" ng-model="version" required>
-    <span class="help-block">Enter the version name.</span>
-
-    <label class="control-label" for="username">Description:</label>
-    <input type="text" class="form-control" name="description" id="description" ng-model="description" required>
-    <span class="help-block">Enter the version description (or leave blank to keep the same as the previous version).</span>
+        <label class="control-label" for="username">Description:</label>
+        <input type="text" class="form-control" name="description" id="description" ng-model="description">
+        <span class="help-block">Enter the version description (or leave blank to keep the same as the previous version).</span>
+    </form>
 
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" ng-click="save()">Save As</button>
+    <button data-ng-disabled="saveasform.$invalid" type="button" class="btn btn-default" ng-click="save()">Save As</button>
 </div>
