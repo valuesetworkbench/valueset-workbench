@@ -47,7 +47,13 @@ angular.module('mapversions').controller('CreateMapversionsController', ['$scope
                     },
                     valueSet: $scope.valuesets.toValueSetDefinition.definedValueSet
                 },
-                sourceAndRole: $scope.mapVersion.sourceAndRole
+                sourceAndRole: $scope.mapVersion.sourceAndRole,
+                changeDescription: {
+                    changeType: "CREATE",
+                    committed: "PENDING",
+                    containingChangeSet: "change",
+                    changeDate: new Date()
+                }
             };
 
             Mapversions.new({MapVersion: mapVersion}, function (response) {

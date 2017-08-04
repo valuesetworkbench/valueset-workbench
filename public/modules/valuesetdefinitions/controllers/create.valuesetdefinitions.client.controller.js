@@ -15,7 +15,13 @@ angular.module('valuesetdefinitions').controller('CreateValuesetdefinitionsContr
                 definedValueSet: {
                     content: $scope.name
                 },
-                sourceAndRole: $scope.valueSetDefinition.sourceAndRole
+                sourceAndRole: $scope.valueSetDefinition.sourceAndRole,
+                changeDescription: {
+                    changeType: "CREATE",
+                    committed: "PENDING",
+                    containingChangeSet: "change",
+                    changeDate: new Date()
+                }
             };
 
             Valuesetdefinitions.new({ValueSetDefinition: valueSetDefinition}, function (response) {
