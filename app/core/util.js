@@ -36,7 +36,7 @@ exports.findResource = function (body) {
 exports.addChangeMetadata = function (user, resource) {
     var resourceKey = Object.keys(resource)[0];
 
-    if (!resource[resourceKey].changeDescription) {
+    if (resource[resourceKey].changeDescription) {
         resource[resourceKey].changeDescription.changeSource = {
             content: user.email
         };
