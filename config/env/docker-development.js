@@ -11,7 +11,7 @@ module.exports = {
 		url: 'http://cts2-automap:8080/'
 	},
 	databaseExplorer: {
-		url: 'http://database-explorer/'
+		url: 'http://database-explorer:8080/'
 	},
 	standardizer: {
 		url: 'http://standardizer:8080/'
