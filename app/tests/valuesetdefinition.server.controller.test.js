@@ -27,11 +27,16 @@ describe('ValueSetDefinition Controller Unit Tests:', function() {
 					return '/';
 				})
 				.post('/')
-				.reply(201, {
-					ValueSetDefinition: {}
-				});
+				.reply(201);
 
-			var req = httpMocks.createRequest();
+			var req = httpMocks.createRequest({
+				body :{
+					valueSetDefinition: {
+                        changeDescription: {}
+                    }
+				},
+				user: { }
+			});
 			var res = httpMocks.createResponse({
 				eventEmitter: require('events').EventEmitter
 			});
@@ -57,7 +62,14 @@ describe('ValueSetDefinition Controller Unit Tests:', function() {
 					error: "Something happened!!!"
 				});
 
-			var req = httpMocks.createRequest();
+			var req = httpMocks.createRequest({
+                body :{
+                    valueSetDefinition: {
+                        changeDescription: {}
+                    }
+                },
+                user: { }
+            });
 			var res = httpMocks.createResponse({
 				eventEmitter: require('events').EventEmitter
 			});

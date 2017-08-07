@@ -43,11 +43,17 @@
                 <div class="row">
                     <div class="col-md-12">
                         <tabset>
-                            <tab heading="Map Notes">
+                            <tab>
+                                <tab-heading>
+                                    Map Notes <i class='fa fa-info-circle' aria-hidden='true'></i>
+                                </tab-heading>
                                 <textarea rows="10" data-ng-model="mapTarget.targetDescription.value" class="form-control"></textarea>
                             </tab>
-                            <tab heading="Rule">
-                                <div ng-model="mapTarget.rule.value" style="height: 200px;" ui-ace></div>
+                            <tab>
+                                <tab-heading>
+                                   Rule <i class='fa fa-cog' aria-hidden='true'></i>
+                                </tab-heading>
+                                <div ng-model="mapTarget.rule.value" style="height: 300px;" ui-ace></div>
                             </tab>
                         </tabset>
                     </div>

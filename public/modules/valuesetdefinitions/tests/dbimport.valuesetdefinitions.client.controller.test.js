@@ -57,9 +57,6 @@
 		}));
 
 		it('change in selected table should trigger a re-fetch of the columns', inject(function() {
-			// Set GET response
-			$httpBackend.expectGET('connections').respond([]);
-
 			$httpBackend.expectPOST('/databaseexplorer/tables/foo/columns').respond(['col1']);
 			$httpBackend.expectPOST('/databaseexplorer/tables/bar/columns').respond(['col2']);
 

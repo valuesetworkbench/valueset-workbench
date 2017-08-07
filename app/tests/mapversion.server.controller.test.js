@@ -31,11 +31,16 @@ describe('MapVersion Controller Unit Tests:', function() {
 					return '/';
 				})
 				.post('/')
-				.reply(201, {
-					MapVersion: {}
-				});
+				.reply(201);
 
-			var req = httpMocks.createRequest();
+			var req = httpMocks.createRequest({
+                body: {
+                    mapVersion: {
+                        changeDescription: {}
+                    }
+                },
+                user: {}
+            });
 			var res = httpMocks.createResponse({
 				eventEmitter: require('events').EventEmitter
 			});
@@ -61,7 +66,14 @@ describe('MapVersion Controller Unit Tests:', function() {
 					error: "Something happened!!!"
 				});
 
-			var req = httpMocks.createRequest();
+			var req = httpMocks.createRequest({
+                body: {
+                    mapVersion: {
+                        changeDescription: {}
+                    }
+                },
+                user: {}
+			});
 			var res = httpMocks.createResponse({
 				eventEmitter: require('events').EventEmitter
 			});

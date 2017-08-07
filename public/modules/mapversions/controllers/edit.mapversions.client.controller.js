@@ -198,11 +198,18 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
         }
 
         $scope.toString = function(resource) {
+            var changedResource;
             if(! resource) {
-                return JSON.stringify($scope.mapVersion, null, 2);
+                changedResource = $scope.mapVersion;
             } else {
-                return JSON.stringify(resource, null, 2);
+                changedResource = resource;
             }
+
+            changedResource = JSON.parse(JSON.stringify(changedResource));
+            delete changedResource.changeDescription;
+            delete changedResource['$$hashKey'];
+
+            return JSON.stringify(changedResource, null, 2);
         }
 
         $scope.saveMapVersion = function() {
@@ -640,7 +647,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                                                     create:function(component) {
                                                         return $($compile(template)($scope));
                                                     },
-                                                    location:0.6,
+                                                    location:0.65,
                                                     id:"customOverlay"
                                                 }],
                                                 //[ "Label", {label: label, location:.4 , cssClass: "mapentry-link-label"}]
