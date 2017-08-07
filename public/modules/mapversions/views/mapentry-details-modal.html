@@ -1,0 +1,59 @@
+<!-- Modal -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="done();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Search Code Systems</h4>
+            </div>
+            <div class="modal-body" ng-init="mapTarget=(mapEntry.mapSet[0].mapTarget | filter:{mapTo: {uri: targetUri}})[0]">
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="panel panel-info detailsSource" id="from-{{mapEntry.mapFrom.uri | encodeURIComponent}}">
+                            <div class="panel-heading no-wrap">{{mapEntry.mapFrom.name}} ({{mapEntry.mapFrom.namespace}})</div>
+                            <div class="panel-body">
+                                <h4><em>{{mapEntry.mapFrom.designation}}</em></h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row">
+
+                            <div class="col-md-6 detailsTarget">
+                                <div class="form-group">
+                                    <label for="sel1">Correlation:</label>
+                                    <input ng-model="mapTarget.correlation.content" ng-change="checkCorrelation(mapTarget)" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="panel panel-info source" id="from-{{mapTarget.mapTo.uri | encodeURIComponent}}">
+                                    <div class="panel-heading no-wrap">{{mapTarget.mapTo.name}} ({{mapTarget.mapTo.namespace}})</div>
+                                    <div class="panel-body">
+                                        <h4><em>{{mapTarget.mapTo.designation}}</em></h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <tabset>
+                            <tab heading="Map Notes">
+                                <textarea rows="10" data-ng-model="mapTarget.targetDescription.value" class="form-control"></textarea>
+                            </tab>
+                            <tab heading="Rule">
+                                <div ng-model="mapTarget.rule.value" style="height: 200px;" ui-ace></div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="done()">Done</button>
+            </div>

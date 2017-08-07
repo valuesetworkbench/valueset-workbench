@@ -1,8 +1,8 @@
 'use strict';
 
 // Mapversions controller
-angular.module('mapversions').controller('EditMapversionsController', ['$scope', 'dialogs', '$http', '$timeout', '$stateParams', '$location', 'Authentication', 'Mapversions', 'Valuesetdefinitions', 'Notification', 'HistoryChange', 'Utils', 'Change',
-	function($scope, dialogs, $http, $timeout, $stateParams, $location, Authentication, Mapversions, Valuesetdefinitions, Notification, HistoryChange, Utils, Change)  {
+angular.module('mapversions').controller('EditMapversionsController', ['$scope', '$compile', 'dialogs', '$http', '$timeout', '$stateParams', '$location', 'Authentication', 'Mapversions', 'Valuesetdefinitions', 'Notification', 'HistoryChange', 'Utils', 'Change',
+	function($scope, $compile, dialogs, $http, $timeout, $stateParams, $location, Authentication, Mapversions, Valuesetdefinitions, Notification, HistoryChange, Utils, Change)  {
         var changeHolder = Change.newChangeHolder();
 
         changeHolder.observe(function (dirty) {
@@ -321,6 +321,28 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
             link.click();
         };
 
+        $scope.showMapDetails = function (sourceUri, targetUri) {
+            var dlg = dialogs.create('/modules/mapversions/views/mapentry-details-modal.html', 'mapversion-mapEntryDetailsCtrl',
+                {
+                    mapEntry: $scope.mapEntriesMap[sourceUri],
+                    changeHolder: changeHolder,
+                    targetUri: targetUri
+                });
+            dlg.result.then(function (data) {
+                $scope.renderConnections();
+            });
+        };
+
+        function jq( myid ) {
+            return myid.replace(/([ #;?%&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
+        }
+
+        $scope.isConnected = function (uri) {
+            var el = $("#" + jq("from-" + encodeURIComponent(uri)))
+            var connected =  el.hasClass("jsplumb-connected");
+            return connected;
+        }
+
         $scope.automap = function() {
             $http.get("/automap?mapversion=" + encodeURIComponent($scope.id) + "&distance=0").then(
                 function(response) {
@@ -405,6 +427,18 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
             }
         }
 
+        $scope.removeTarget = function (sourceId, targetId) {
+            removeTarget(sourceId, targetId)
+            $scope.renderConnections();
+        };
+
+        instance.bind('connectionDetached', function(info) { //
+            $timeout(function () {
+                $scope.$apply()
+            });
+            return true;
+        });
+
         instance.bind('beforeDrop', function(info){ // Before new connection is created
             var sourceId = getUriFromId(info.sourceId);
             var targetId = getUriFromId(info.targetId);
@@ -435,11 +469,25 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
             }
         });
 
+        function findTarget (mapEntry, targetUri) {
+            var target;
+            angular.forEach(mapEntry.entry.mapSet[0].mapTarget, function(entity) {
+                if(entity.mapTo.uri === targetUri) {
+                    target = entity;
+                }
+            });
+
+            return target;
+        }
+
         instance.bind("connectionMoved", function (info, originalEvent) {
             if (originalEvent) {
                 var originalSourceId = getUriFromId(info.originalSourceId);
 
                 var originalTargetId = getUriFromId(info.originalTargetId);
+
+                var target = findTarget($scope.mapEntriesMap[originalSourceId], originalTargetId);
+                originalEvent.oldTarget = target;
 
                 removeTarget(originalSourceId, originalTargetId);
             }
@@ -452,8 +500,21 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
                 var foundEntry = $scope.mapEntriesMap[sourceId];
 
+                var targetEntity = $scope.toEntitiesMap[targetId];
+
+                var target;
+                if (originalEvent.oldTarget) {
+                    originalEvent.oldTarget.mapTo = targetEntity;
+
+                    target = originalEvent.oldTarget;
+                } else {
+                    target = {
+                        entryOrder: 1, mapTo: targetEntity
+                    }
+                }
+
                 if(foundEntry) {
-                    foundEntry.entry.mapSet[0].mapTarget.push({mapTo: $scope.toEntitiesMap[targetId]});
+                    foundEntry.entry.mapSet[0].mapTarget.push(target);
                 } else {
                     var entry = {
                         processingRule: "ALL_MATCHES",
@@ -465,7 +526,11 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                             }
                         },
                         mapFrom: $scope.fromEntitiesMap[sourceId],
-                        mapSet: [{processingRule: "ALL_MATCHES", entryOrder: 1, mapTarget: [{entryOrder: 1, mapTo: $scope.toEntitiesMap[targetId]}]}]
+                        mapSet: [{
+                            processingRule: "ALL_MATCHES",
+                            entryOrder: 1,
+                            mapTarget: [target]
+                        }]
                     };
 
                     foundEntry = {entry: entry};
@@ -474,6 +539,8 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                 }
 
                 $scope.saveMapEntry(foundEntry);
+
+                $scope.renderConnections();
             }
         });
 
@@ -548,19 +615,36 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                                 angular.forEach(mapEntry.entry.mapSet[0].mapTarget, function (target) {
                                     var targetUri = target.mapTo.uri;
 
-                                    var label = "";
+                                    var label;
                                     if (target.correlation) {
                                         label = target.correlation.content;
                                     }
 
                                     if ($scope.filteredFromEntitiesMap[sourceUri] && $scope.filteredToEntitiesMap[targetUri]) {
+                                        var template =
+                                        '<div><div class="btn-group btn-group-xs">' +
+                                         "<button type='button' class='btn btn-primary' ng-click='showMapDetails(\"" + sourceUri + "\", \"" + targetUri + "\")'>" +
+                                            '<i class="glyphicon glyphicon-edit"></i>' +
+                                         '</button>' +
+                                         "<button type='button' class='btn btn-danger' ng-click='removeTarget(\"" + sourceUri + "\", \"" + targetUri + "\")'>" +
+                                            '<i class="glyphicon glyphicon-remove"></i>' +
+                                         '</button>' +
+                                        '</div></div>';
+
                                         instance.connect({
                                             source: 'from-' + encodeURIComponent(sourceUri),
-                                            target: 'to-' + encodeURIComponent(targetUri)
+                                            target: 'to-' + encodeURIComponent(targetUri),
                                             // Maybe add the correlation as a label???
-                                            //overlays:[
-                                            //    [ "Label", {label: label}]
-                                            //]
+                                            overlays: [
+                                                ["Custom", {
+                                                    create:function(component) {
+                                                        return $($compile(template)($scope));
+                                                    },
+                                                    location:0.6,
+                                                    id:"customOverlay"
+                                                }],
+                                                //[ "Label", {label: label, location:.4 , cssClass: "mapentry-link-label"}]
+                                            ]
                                         });
                                     }
                                 });
@@ -783,6 +867,55 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
     $scope.save = function () {
         $modalInstance.close({version: $scope.version, description: $scope.description});
+    }; // end save
+
+}).controller('mapversion-mapEntryDetailsCtrl', function ($scope, $modalInstance, $timeout, dialogs, data) {
+    $scope.mapEntry = data.mapEntry.entry;
+    $scope.targetUri = data.targetUri;
+
+    data.changeHolder.addChange(data.mapEntry.entry.mapFrom.uri, data.mapEntry);
+
+    $scope.checkCorrelation = function (mapTarget) {
+        if (!mapTarget.correlation) {
+            mapTarget.correlation = {}
+        }
+    };
+
+    $scope.editRule = function (mapTarget) {
+        var dlg = dialogs.create('/modules/mapversions/views/edit-mapentry-rule-modal.html', 'mapversion-editMapEntryRuleCtrl',
+            {
+                mapTarget: mapTarget
+            });
+
+        dlg.result.then(function (data) {
+            var content = data.content;
+            if (!mapTarget.rule) {
+                mapTarget.rule = {}
+            }
+            mapTarget.rule.value = content;
+        });
+    }
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('canceled');
+    }; // end cancel
+
+    $scope.done = function () {
+        $modalInstance.close();
+    }; // end save
+
+}).controller('mapversion-editMapEntryRuleCtrl', function ($scope, $modalInstance, data) {
+    $scope.editorContent = null;
+    if (data.mapTarget.rule) {
+        $scope.editorContent = data.mapTarget.rule.value
+    }
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('canceled');
+    };
+
+    $scope.done = function () {
+        $modalInstance.close({content: $scope.editorContent});
     }; // end save
 
 });

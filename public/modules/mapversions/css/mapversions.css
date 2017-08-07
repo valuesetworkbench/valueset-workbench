@@ -24,3 +24,17 @@
 .ui-select-choices-group-label {
     font-size: 20px;
 }
+
+.map-info-button {
+    position: relative;
+    top: 14px;
+    left: 270px;
+}
+
+.mapentry-link-label {
+    border-style: solid;
+    border-width: 1px;
+    background-color: green;
+    border-radius: 25px;
+    padding: 5px;
+}
