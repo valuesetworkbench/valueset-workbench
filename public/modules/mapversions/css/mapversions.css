@@ -38,3 +38,16 @@
     border-radius: 25px;
     padding: 5px;
 }
+
+.background {
+
+}
+
+.pinned > div {
+    #box-shadow: 30px 16px 24px 20px;
+}
+
+.pinned {
+    width: 100%;
+    will-change: top;
+}

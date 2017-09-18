@@ -1,8 +1,8 @@
 'use strict';
 
 // Mapversions controller
-angular.module('mapversions').controller('EditMapversionsController', ['$scope', '$compile', 'dialogs', '$http', '$timeout', '$stateParams', '$location', 'Authentication', 'Mapversions', 'Valuesetdefinitions', 'Notification', 'HistoryChange', 'Utils', 'Change',
-	function($scope, $compile, dialogs, $http, $timeout, $stateParams, $location, Authentication, Mapversions, Valuesetdefinitions, Notification, HistoryChange, Utils, Change)  {
+angular.module('mapversions').controller('EditMapversionsController', ['$scope', '$window', '$compile', 'dialogs', '$http', '$timeout', '$stateParams', '$location', 'Authentication', 'Mapversions', 'Valuesetdefinitions', 'Notification', 'HistoryChange', 'Utils', 'Change',
+	function($scope, $window,$compile, dialogs, $http, $timeout, $stateParams, $location, Authentication, Mapversions, Valuesetdefinitions, Notification, HistoryChange, Utils, Change)  {
         var changeHolder = Change.newChangeHolder();
 
         changeHolder.observe(function (dirty) {
@@ -496,62 +496,201 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                 var target = findTarget($scope.mapEntriesMap[originalSourceId], originalTargetId);
                 originalEvent.oldTarget = target;
 
-                removeTarget(originalSourceId, originalTargetId);
+                removeTarget(originalSourceId, originalTargetId, originalEvent);
             }
         });
+
+        $scope.connect = function(sourceId, targetId, originalEvent) {
+            var foundEntry = $scope.mapEntriesMap[sourceId];
+
+            var targetEntity = $scope.toEntitiesMap[targetId];
+
+            var target;
+            if (originalEvent && originalEvent.oldTarget) {
+                originalEvent.oldTarget.mapTo = targetEntity;
+
+                target = originalEvent.oldTarget;
+            } else {
+                target = {
+                    entryOrder: 1, mapTo: targetEntity
+                }
+            }
+
+            if(foundEntry) {
+                foundEntry.entry.mapSet[0].mapTarget.push(target);
+            } else {
+                var entry = {
+                    processingRule: "ALL_MATCHES",
+                    assertedBy: {
+                        map: $scope.mapVersion.versionOf,
+                        mapVersion: {
+                            content: $scope.mapVersion.mapVersionName,
+                            map: $scope.mapVersion.versionOf
+                        }
+                    },
+                    mapFrom: $scope.fromEntitiesMap[sourceId],
+                    mapSet: [{
+                        processingRule: "ALL_MATCHES",
+                        entryOrder: 1,
+                        mapTarget: [target]
+                    }]
+                };
+
+                foundEntry = {entry: entry};
+                $scope.mapEntries.push(foundEntry);
+                $scope.buildMapEntriesMap();
+            }
+
+            $scope.saveMapEntry(foundEntry);
+
+            $scope.renderConnections();
+        }
 
         instance.bind("connection", function (info, originalEvent) {
             if(originalEvent) {
                 var sourceId = getUriFromId(info.sourceId);
                 var targetId = getUriFromId(info.targetId);
 
-                var foundEntry = $scope.mapEntriesMap[sourceId];
-
-                var targetEntity = $scope.toEntitiesMap[targetId];
-
-                var target;
-                if (originalEvent.oldTarget) {
-                    originalEvent.oldTarget.mapTo = targetEntity;
-
-                    target = originalEvent.oldTarget;
-                } else {
-                    target = {
-                        entryOrder: 1, mapTo: targetEntity
-                    }
-                }
-
-                if(foundEntry) {
-                    foundEntry.entry.mapSet[0].mapTarget.push(target);
-                } else {
-                    var entry = {
-                        processingRule: "ALL_MATCHES",
-                        assertedBy: {
-                            map: $scope.mapVersion.versionOf,
-                            mapVersion: {
-                                content: $scope.mapVersion.mapVersionName,
-                                map: $scope.mapVersion.versionOf
-                            }
-                        },
-                        mapFrom: $scope.fromEntitiesMap[sourceId],
-                        mapSet: [{
-                            processingRule: "ALL_MATCHES",
-                            entryOrder: 1,
-                            mapTarget: [target]
-                        }]
-                    };
-
-                    foundEntry = {entry: entry};
-                    $scope.mapEntries.push(foundEntry);
-                    $scope.buildMapEntriesMap();
-                }
-
-                $scope.saveMapEntry(foundEntry);
-
-                $scope.renderConnections();
+                $scope.connect(sourceId, targetId);
             }
         });
 
         var isRendered = false;
+
+        var currentHover = null;
+
+        function arraymove(arr, fromIndex, toIndex) {
+            var element = arr[fromIndex];
+            arr.splice(fromIndex, 1);
+            arr.splice(toIndex, 0, element);
+
+            return arr;
+        }
+
+        function sortToEntities(uri, element, index) {
+            var connections = instance.getConnections({source:element});
+            connections = connections.sort(function (a,b) {
+                return a.sourceId > b.sourceId;
+            });
+
+            var copy = angular.copy($scope.filteredToEntities).sort(function (a,b) {
+                return a.uri > b.uri;
+            });
+
+            $.each(connections, function (idx, connection) {
+                var found = copy.findIndex(function (item) {
+                    var targetUri = decodeURIComponent(connection.target.id.replace(/^to-/,""));
+                    return item.uri == targetUri;
+                });
+
+                if (index > copy.length) {
+                    index - copy.length - 1
+                }
+
+                copy = arraymove(copy, found, index)
+            });
+
+            $scope.filteredToEntities = copy;
+        }
+
+        $scope.mouseover = function (uri, element, index, $event) {
+            if (!$scope.pinned && (! currentHover || currentHover.uri != uri)) {
+                if (!currentHover) {
+                    currentHover = {uri: uri, element: element.currentTarget};
+                }
+                if (currentHover.uri != uri) {
+                    instance.hide(currentHover.element);
+                    currentHover = {uri: uri, element: element.currentTarget};
+                }
+                instance.show(element.currentTarget);
+
+                sortToEntities(uri, element.currentTarget, index)
+            }
+        }
+
+        $scope.connectPinned = function (entry) {
+            $scope.connect($scope.pinned.uri, entry.uri)
+        }
+
+        $scope.$watch("pinned", function() {
+            $scope.renderConnections();
+        });
+
+        $scope.pinnedIndex = null;
+        $scope.pinnedYPos = null;
+
+        $scope.setPinnedPosition = function ($event) {
+            $scope.pinnedPosition = $event.clientY;
+            $scope.nowPosition = $(window).scrollTop();
+
+            $('.pinned').css("position", "fixed");
+            $('.pinned').css("top", $event.clientY +"px");
+        }
+
+        $scope.setUnpinnedPosition = function ($event) {
+
+            $($event.currentTarget).parents('.pinnable').css("position", "");
+            $($event.currentTarget).parents('.pinnable').css("top", "");
+
+            var findOverlapping = function (itemHeight) {
+                var middle = null;
+                var middleHeight = null;
+
+                $(".source")
+                    .each(function () {
+                        var height = $(this).offset().top;
+
+                        if (!middle || (height > middleHeight && height < itemHeight)) {
+                            middle = $(this);
+                            middleHeight = height;
+                        }
+                    });
+
+                return middle;
+            }
+
+            var overlapping = findOverlapping($event.pageY);
+
+            var scope = angular.element(overlapping.get(0)).scope();
+
+            var pinnedIndex = $scope.filteredFromEntities.findIndex(function (entry) {
+                return entry == $scope.pinned;
+            })
+
+            var overlappingEntryIndex = $scope.filteredFromEntities.findIndex(function (entry) {
+                return entry == scope.entry;
+            })
+
+            $scope.pinned = null;
+
+            if (pinnedIndex != overlappingEntryIndex) {
+                arraymove($scope.filteredFromEntities, pinnedIndex, overlappingEntryIndex);
+                $scope.renderConnections();
+            }
+
+        }
+
+        $(window).scroll(_.throttle(function () {
+            var element = $('.pinned');
+
+            if (element.length > 0) {
+
+                var oldPosition = $scope.nowPosition
+                var nowPosition = $(window).scrollTop();
+
+                var delta = oldPosition - nowPosition
+
+                var top = element.css("top");
+                var oldTop = parseInt(top.substr(0, top.indexOf('px')));
+                element.css("position", "absolute");
+                element.animate({top: oldTop - delta + "px" }, 0, 'linear', function () {
+                        $scope.nowPosition = $(window).scrollTop();
+                        instance.repaintEverything();
+                });
+
+
+            }
+        }, 20));
 
         $scope.renderConnections = function(rendered) {
 
@@ -579,7 +718,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
                     $(".source:not(.jsplumb-droppable)").each(function() {
                         instance.makeSource(this, {
-                            filter: "a",
+                            filter: ":not(.source-filter)",
                             //detachable: false,
                             filterExclude: true,
                             maxConnections: -1,
@@ -638,7 +777,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                                          '</button>' +
                                         '</div></div>';
 
-                                        instance.connect({
+                                        var connection = instance.connect({
                                             source: 'from-' + encodeURIComponent(sourceUri),
                                             target: 'to-' + encodeURIComponent(targetUri),
                                             // Maybe add the correlation as a label???
@@ -658,6 +797,12 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
                             }
                         });
+                    }
+                });
+
+                $(".source").each(function() {
+                    if (!currentHover || currentHover.element != this) {
+                        instance.hide(this)
                     }
                 });
 

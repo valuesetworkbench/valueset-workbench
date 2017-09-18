@@ -145,7 +145,7 @@
                 <div class="panel-body" data-ng-init="getEntries()">
                     <div class="jtk-demo-canvas canvas-wide source-target-demo jtk-surface jtk-surface-nopan" data-ng-init="renderConnections(true)" id="canvas">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-4 from-entities-list">
                                 <form class="form-search form-inline">
                                     <input ng-model="fromQuery" type="text" class="form-control search-query"
                                            placeholder="Filter by" ng-model-options="{debounce: 250}">
@@ -162,10 +162,23 @@
                                             </a>
                                         </div>
                                         -->
-                                        <div class="panel panel-info source" id="from-{{entry.uri | encodeURIComponent}}">
-                                            <div class="panel-heading no-wrap">{{entry.name}} ({{entry.namespace}})</div>
-                                            <div class="panel-body">
-                                                <h4><em>{{entry.designation}}</em></h4>
+                                        <div class="pinnable" ng-class="{pinned: $parent.pinned == entry}">
+                                            <div ng-mouseover="mouseover(entry.uri, $event, $index, $event)"
+                                                 class="panel panel-info source" id="from-{{entry.uri | encodeURIComponent}}">
+                                                <div class="panel-heading no-wrap">
+                                                    <span class="pull-right">
+                                                        <span ng-show="!$parent.pinned" ng-click="$parent.pinned = entry; $parent.pinnedIndex = $index; setPinnedPosition($event);">
+                                                            <i class="fa fa-lock" aria-hidden="true"></i>
+                                                        </span>
+                                                        <span ng-show="$parent.pinned == entry" class="source-filter" ng-click="setUnpinnedPosition($event)">
+                                                            <i class="fa fa-unlock" aria-hidden="true"></i>
+                                                        </span>
+                                                    </span>
+                                                    {{entry.name}} ({{entry.namespace}})
+                                                </div>
+                                                <div class="panel-body">
+                                                    <h4><em>{{entry.designation}}</em></h4>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
@@ -183,10 +196,12 @@
                                 </div>
                                 <ul class="list-unstyled" data-ng-repeat="entry in filteredToEntities">
                                     <li>
-                                        <div class="panel panel-info target" id="to-{{entry.uri | encodeURIComponent }}">
-                                            <div class="panel-heading no-wrap">{{entry.name}} ({{entry.namespace}})</div>
-                                            <div class="panel-body">
-                                                <h4><em>{{entry.designation}}</em></h4>
+                                        <div>
+                                            <div class="panel panel-info target" id="to-{{entry.uri | encodeURIComponent }}">
+                                                <div class="panel-heading no-wrap">{{entry.name}} ({{entry.namespace}})</div>
+                                                <div class="panel-body">
+                                                    <h4><em>{{entry.designation}}</em></h4>
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
