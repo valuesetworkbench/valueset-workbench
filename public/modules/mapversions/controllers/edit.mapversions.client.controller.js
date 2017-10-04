@@ -555,6 +555,14 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
             }
         });
 
+        instance.bind("connectionDrag", function (info, originalEvent) {
+            $scope.dragging = true;
+        });
+        instance.bind("connectionDragStop", function (info, originalEvent) {
+            $scope.dragging = false;
+        });
+
+
         var isRendered = false;
 
         var currentHover = null;
@@ -567,19 +575,40 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
             return arr;
         }
 
-        function sortToEntities(uri, element, index) {
-            var connections = instance.getConnections({source:element});
+        function sortToEntities(uri, element, index, sourceOrTarget) {
+            var connections;
+            if (sourceOrTarget == 'source') {
+                connections = instance.getConnections({source:element});
+            }
+            if (sourceOrTarget == 'target') {
+                connections = instance.getConnections({target:element});
+            }
+
             connections = connections.sort(function (a,b) {
                 return a.sourceId > b.sourceId;
             });
 
-            var copy = angular.copy($scope.filteredToEntities).sort(function (a,b) {
+            var entities;
+            if (sourceOrTarget == 'source') {
+                entities = $scope.filteredToEntities
+            }
+            if (sourceOrTarget == 'target') {
+                entities = $scope.filteredFromEntities
+            }
+
+            var copy = angular.copy(entities).sort(function (a,b) {
                 return a.uri > b.uri;
             });
 
             $.each(connections, function (idx, connection) {
                 var found = copy.findIndex(function (item) {
-                    var targetUri = decodeURIComponent(connection.target.id.replace(/^to-/,""));
+                    var targetUri;
+                    if (sourceOrTarget == 'source') {
+                        targetUri = decodeURIComponent(connection.target.id.replace(/^to-/, ""));
+                    }
+                    if (sourceOrTarget == 'target') {
+                        targetUri = decodeURIComponent(connection.source.id.replace(/^from-/, ""));
+                    }
                     return item.uri == targetUri;
                 });
 
@@ -590,49 +619,55 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                 copy = arraymove(copy, found, index)
             });
 
-            $scope.filteredToEntities = copy;
+            if (sourceOrTarget == 'source') {
+                $scope.filteredToEntities = copy;
+            }
+            if (sourceOrTarget == 'target') {
+                $scope.filteredFromEntities = copy;
+            }
+
         }
 
-        $scope.mouseover = function (uri, element, index, $event) {
-            if (!$scope.pinned && (! currentHover || currentHover.uri != uri)) {
+        $scope.mouseover = function (uri, element, index, $event, sourceOrTarget) {
+            if (! $scope.dragging && (! currentHover || currentHover.uri != uri)) {
                 if (!currentHover) {
-                    currentHover = {uri: uri, element: element.currentTarget};
+                    currentHover = {uri: uri, element: element.currentTarget, sourceOrTarget: sourceOrTarget};
                 }
                 if (currentHover.uri != uri) {
                     instance.hide(currentHover.element);
-                    currentHover = {uri: uri, element: element.currentTarget};
+                    currentHover = {uri: uri, element: element.currentTarget, sourceOrTarget: sourceOrTarget};
                 }
                 instance.show(element.currentTarget);
 
-                sortToEntities(uri, element.currentTarget, index)
+                sortToEntities(uri, element.currentTarget, index, sourceOrTarget)
             }
         }
 
         $scope.renderConnections = function(rendered) {
 
             $timeout(function () {
-                if(rendered) {
+                if (rendered) {
                     isRendered = true;
                 }
-                if(! isRendered) {
+                if (!isRendered) {
                     return;
                 }
 
                 instance.deleteEveryEndpoint();
 
                 instance.Defaults.Overlays = [
-                    [ "Arrow", {
+                    ["Arrow", {
                         location: 0.5,
-                        id:"arrow",
-                        length:14,
-                        foldback:0.8
-                    } ]
+                        id: "arrow",
+                        length: 14,
+                        foldback: 0.8
+                    }]
                 ];
 
                 // suspend drawing and initialise.
                 instance.batch(function () {
 
-                    $(".source:not(.jsplumb-droppable)").each(function() {
+                    $(".source:not(.jsplumb-droppable)").each(function () {
                         instance.makeSource(this, {
                             filter: ":not(.source-filter)",
                             //detachable: false,
@@ -643,11 +678,11 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                         });
                     });
 
-                    $(".target:not(.jsplumb-droppable)").each(function() {
+                    $(".target:not(.jsplumb-droppable)").each(function () {
                         instance.makeTarget(this, {
                             dropOptions: {hoverClass: "hover"},
                             //detachable: true,
-                            anchor: ["Continuous", {faces:["left"]}],
+                            anchor: ["Continuous", {faces: ["left"]}],
                             endpoint: ["Dot", {radius: 11, cssClass: "large-green"}]
                         });
                     });
@@ -684,14 +719,14 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
                                     if ($scope.filteredFromEntitiesMap[sourceUri] && $scope.filteredToEntitiesMap[targetUri]) {
                                         var template =
-                                        '<div><div class="btn-group btn-group-xs">' +
-                                         "<button type='button' class='btn btn-primary' ng-click='showMapDetails(\"" + sourceUri + "\", \"" + targetUri + "\")'>" +
+                                            '<div><div class="btn-group btn-group-xs">' +
+                                            "<button type='button' class='btn btn-primary' ng-click='showMapDetails(\"" + sourceUri + "\", \"" + targetUri + "\")'>" +
                                             '<i class="glyphicon glyphicon-edit"></i>' +
-                                         '</button>' +
-                                         "<button type='button' class='btn btn-danger' ng-click='removeTarget(\"" + sourceUri + "\", \"" + targetUri + "\")'>" +
+                                            '</button>' +
+                                            "<button type='button' class='btn btn-danger' ng-click='removeTarget(\"" + sourceUri + "\", \"" + targetUri + "\")'>" +
                                             '<i class="glyphicon glyphicon-remove"></i>' +
-                                         '</button>' +
-                                        '</div></div>';
+                                            '</button>' +
+                                            '</div></div>';
 
                                         var connection = instance.connect({
                                             source: 'from-' + encodeURIComponent(sourceUri),
@@ -699,11 +734,11 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                                             // Maybe add the correlation as a label???
                                             overlays: [
                                                 ["Custom", {
-                                                    create:function(component) {
+                                                    create: function (component) {
                                                         return $($compile(template)($scope));
                                                     },
-                                                    location:0.65,
-                                                    id:"customOverlay"
+                                                    location: 0.65,
+                                                    id: "customOverlay"
                                                 }],
                                                 //[ "Label", {label: label, location:.4 , cssClass: "mapentry-link-label"}]
                                             ]
@@ -716,11 +751,27 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                     }
                 });
 
-                $(".source").each(function() {
-                    if (!currentHover || currentHover.element != this) {
+                if (currentHover && currentHover.sourceOrTarget == 'source') {
+                    $(".source").each(function () {
+                        if (currentHover.element != this) {
+                            instance.hide(this)
+                        }
+                    });
+                }
+
+                if (currentHover && currentHover.sourceOrTarget == 'target') {
+                    $(".target").each(function () {
+                        if (currentHover.element != this) {
+                            instance.hide(this)
+                        }
+                    });
+                }
+
+                if (!currentHover) {
+                    $(".source, .target").each(function () {
                         instance.hide(this)
-                    }
-                });
+                    });
+                }
 
                 instance.repaintEverything();
             }, 0);

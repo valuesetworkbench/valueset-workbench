@@ -163,7 +163,7 @@
                                         </div>
                                         -->
                                         <div class="pinnable">
-                                            <div ng-mouseover="mouseover(entry.uri, $event, $index, $event)"
+                                            <div ng-mouseover="mouseover(entry.uri, $event, $index, $event, 'source')"
                                                  class="panel panel-info source" id="from-{{entry.uri | encodeURIComponent}}">
                                                 <div class="panel-heading no-wrap">
                                                         <span class="drag-handle source-filter pull-right">
@@ -192,7 +192,8 @@
                                 <ul class="list-unstyled" data-ng-repeat="entry in filteredToEntities">
                                     <li>
                                         <div>
-                                            <div class="panel panel-info target" id="to-{{entry.uri | encodeURIComponent }}">
+                                            <div ng-mouseover="mouseover(entry.uri, $event, $index, $event, 'target')"
+                                                    class="panel panel-info target" id="to-{{entry.uri | encodeURIComponent }}">
                                                 <div class="panel-heading no-wrap">{{entry.name}} ({{entry.namespace}})</div>
                                                 <div class="panel-body">
                                                     <h4><em>{{entry.designation}}</em></h4>
