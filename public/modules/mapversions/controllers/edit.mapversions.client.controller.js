@@ -584,46 +584,48 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                 connections = instance.getConnections({target:element});
             }
 
-            connections = connections.sort(function (a,b) {
-                return a.sourceId > b.sourceId;
-            });
-
-            var entities;
-            if (sourceOrTarget == 'source') {
-                entities = $scope.filteredToEntities
-            }
-            if (sourceOrTarget == 'target') {
-                entities = $scope.filteredFromEntities
-            }
-
-            var copy = angular.copy(entities).sort(function (a,b) {
-                return a.uri > b.uri;
-            });
-
-            $.each(connections, function (idx, connection) {
-                var found = copy.findIndex(function (item) {
-                    var targetUri;
-                    if (sourceOrTarget == 'source') {
-                        targetUri = decodeURIComponent(connection.target.id.replace(/^to-/, ""));
-                    }
-                    if (sourceOrTarget == 'target') {
-                        targetUri = decodeURIComponent(connection.source.id.replace(/^from-/, ""));
-                    }
-                    return item.uri == targetUri;
+            if (connections.length > 0) {
+                connections = connections.sort(function (a, b) {
+                    return a.sourceId > b.sourceId;
                 });
 
-                if (index > copy.length) {
-                    index - copy.length - 1
+                var entities;
+                if (sourceOrTarget == 'source') {
+                    entities = $scope.filteredToEntities
+                }
+                if (sourceOrTarget == 'target') {
+                    entities = $scope.filteredFromEntities
                 }
 
-                copy = arraymove(copy, found, index)
-            });
+                var copy = angular.copy(entities).sort(function (a, b) {
+                    return a.uri > b.uri;
+                });
 
-            if (sourceOrTarget == 'source') {
-                $scope.filteredToEntities = copy;
-            }
-            if (sourceOrTarget == 'target') {
-                $scope.filteredFromEntities = copy;
+                $.each(connections, function (idx, connection) {
+                    var found = copy.findIndex(function (item) {
+                        var targetUri;
+                        if (sourceOrTarget == 'source') {
+                            targetUri = decodeURIComponent(connection.target.id.replace(/^to-/, ""));
+                        }
+                        if (sourceOrTarget == 'target') {
+                            targetUri = decodeURIComponent(connection.source.id.replace(/^from-/, ""));
+                        }
+                        return item.uri == targetUri;
+                    });
+
+                    if (index > copy.length) {
+                        index - copy.length - 1
+                    }
+
+                    copy = arraymove(copy, found, index)
+                });
+
+                if (sourceOrTarget == 'source') {
+                    $scope.filteredToEntities = copy;
+                }
+                if (sourceOrTarget == 'target') {
+                    $scope.filteredFromEntities = copy;
+                }
             }
 
         }
