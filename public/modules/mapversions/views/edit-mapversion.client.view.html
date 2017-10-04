@@ -153,8 +153,8 @@
                                 <div data-ng-show="fromEntitiesLoading">
                                     <img class="center-block" src="/modules/core/img/loaders/loader.gif"/>
                                 </div>
-                                <ul class="list-unstyled" data-ng-repeat="entry in filteredFromEntities">
-                                    <li>
+                                <ul class="list-unstyled" ng-model="filteredFromEntities" ui-sortable="sortableOptions">
+                                    <li data-ng-repeat="entry in filteredFromEntities">
                                         <!--
                                         <div class="map-info-button" ng-show="isConnected(entry.uri)">
                                             <a href="" ng-click="showMapDetails(entry.uri)">
@@ -162,18 +162,13 @@
                                             </a>
                                         </div>
                                         -->
-                                        <div class="pinnable" ng-class="{pinned: $parent.pinned == entry}">
+                                        <div class="pinnable">
                                             <div ng-mouseover="mouseover(entry.uri, $event, $index, $event)"
                                                  class="panel panel-info source" id="from-{{entry.uri | encodeURIComponent}}">
                                                 <div class="panel-heading no-wrap">
-                                                    <span class="pull-right">
-                                                        <span ng-show="!$parent.pinned" ng-click="$parent.pinned = entry; $parent.pinnedIndex = $index; setPinnedPosition($event);">
-                                                            <i class="fa fa-lock" aria-hidden="true"></i>
+                                                        <span class="drag-handle source-filter pull-right">
+                                                            <i class="fa fa-arrows source-filter" aria-hidden="true"></i>
                                                         </span>
-                                                        <span ng-show="$parent.pinned == entry" class="source-filter" ng-click="setUnpinnedPosition($event)">
-                                                            <i class="fa fa-unlock" aria-hidden="true"></i>
-                                                        </span>
-                                                    </span>
                                                     {{entry.name}} ({{entry.namespace}})
                                                 </div>
                                                 <div class="panel-body">

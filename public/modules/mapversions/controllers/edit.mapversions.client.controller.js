@@ -608,90 +608,6 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
             }
         }
 
-        $scope.connectPinned = function (entry) {
-            $scope.connect($scope.pinned.uri, entry.uri)
-        }
-
-        $scope.$watch("pinned", function() {
-            $scope.renderConnections();
-        });
-
-        $scope.pinnedIndex = null;
-        $scope.pinnedYPos = null;
-
-        $scope.setPinnedPosition = function ($event) {
-            $scope.pinnedPosition = $event.clientY;
-            $scope.nowPosition = $(window).scrollTop();
-
-            $('.pinned').css("position", "fixed");
-            $('.pinned').css("top", $event.clientY +"px");
-        }
-
-        $scope.setUnpinnedPosition = function ($event) {
-
-            $($event.currentTarget).parents('.pinnable').css("position", "");
-            $($event.currentTarget).parents('.pinnable').css("top", "");
-
-            var findOverlapping = function (itemHeight) {
-                var middle = null;
-                var middleHeight = null;
-
-                $(".source")
-                    .each(function () {
-                        var height = $(this).offset().top;
-
-                        if (!middle || (height > middleHeight && height < itemHeight)) {
-                            middle = $(this);
-                            middleHeight = height;
-                        }
-                    });
-
-                return middle;
-            }
-
-            var overlapping = findOverlapping($event.pageY);
-
-            var scope = angular.element(overlapping.get(0)).scope();
-
-            var pinnedIndex = $scope.filteredFromEntities.findIndex(function (entry) {
-                return entry == $scope.pinned;
-            })
-
-            var overlappingEntryIndex = $scope.filteredFromEntities.findIndex(function (entry) {
-                return entry == scope.entry;
-            })
-
-            $scope.pinned = null;
-
-            if (pinnedIndex != overlappingEntryIndex) {
-                arraymove($scope.filteredFromEntities, pinnedIndex, overlappingEntryIndex);
-                $scope.renderConnections();
-            }
-
-        }
-
-        $(window).scroll(_.throttle(function () {
-            var element = $('.pinned');
-
-            if (element.length > 0) {
-
-                var oldPosition = $scope.nowPosition
-                var nowPosition = $(window).scrollTop();
-
-                var delta = oldPosition - nowPosition
-
-                var top = element.css("top");
-                var oldTop = parseInt(top.substr(0, top.indexOf('px')));
-                element.css("position", "absolute");
-                element.animate({top: oldTop - delta + "px" }, 0, 'linear', function () {
-                        $scope.nowPosition = $(window).scrollTop();
-                        instance.repaintEverything();
-                });
-
-
-            }
-        }, 20));
-
         $scope.renderConnections = function(rendered) {
 
             $timeout(function () {
@@ -720,7 +636,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                         instance.makeSource(this, {
                             filter: ":not(.source-filter)",
                             //detachable: false,
-                            filterExclude: true,
+                            //filterExclude: true,
                             maxConnections: -1,
                             endpoint: ["Dot", {radius: 7, cssClass: "small-blue"}],
                             anchor: 'Right'
@@ -808,6 +724,21 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
                 instance.repaintEverything();
             }, 0);
+        };
+
+        var timer = null;
+        $scope.sortableOptions = {
+            handle: '.drag-handle',
+            start: function () {
+                timer = setInterval(function() {
+                    instance.repaintEverything();
+                }, 100);
+            },
+            stop: function () {
+                window.clearInterval(timer);
+                timer = null
+                instance.repaintEverything();
+            }
         };
 
         $scope.$watchCollection("filteredFromEntities", function() {

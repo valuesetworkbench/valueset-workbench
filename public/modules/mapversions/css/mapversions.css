@@ -51,3 +51,7 @@
     width: 100%;
     will-change: top;
 }
+
+.drag-handle {
+    cursor: move;
+}
