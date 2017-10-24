@@ -288,6 +288,13 @@ angular.module('codesystemversions').controller('EditCodesystemversionsControlle
         if(! $scope.entity.property) {
             $scope.entity.property = [];
         }
+
+        var entityUrl = data.entity.href.substr("/codesystem/" + 1);
+
+        $scope.api = [
+            {name: "Retrieve an Entity (CTS2 format)", method: "GET", type: "cts2", url: entityUrl, description: "Fetch the entity in CTS2 format."}
+        ];
+
     });
 
     $scope.cancel = function () {
