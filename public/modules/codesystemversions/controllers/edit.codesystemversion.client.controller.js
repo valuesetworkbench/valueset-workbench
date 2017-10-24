@@ -325,6 +325,10 @@ angular.module('codesystemversions').controller('EditCodesystemversionsControlle
         designations.splice(index, 1);
     };
 
+    $scope.removeProperty = function (properties, index) {
+        properties.splice(index, 1);
+    };
+
     $scope.save = function () {
         $scope.entity.changeableElementGroup = {
             changeDescription: {

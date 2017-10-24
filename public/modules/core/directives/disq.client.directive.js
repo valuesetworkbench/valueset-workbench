@@ -23,7 +23,7 @@ angular.module('core')
             angular.forEach(result, function(person) {
                 if(person.username !== 'admin') {
                     person.label = person.displayName;
-                    person.avatarUrl = person.photo;
+                    person.avatarUrl = person.photoUrl;
                     $scope.people.push(person);
                 }
             });
@@ -69,7 +69,7 @@ angular.module('core')
             $scope.postComment = function() {
                 var currentUser = {
                     id: Authentication.user.username,
-                    avatarUrl: Authentication.user.photo,
+                    avatarUrl: Authentication.user.photoUrl,
                     name: Authentication.user.displayName
                 };
 

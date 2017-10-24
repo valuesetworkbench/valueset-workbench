@@ -5,7 +5,7 @@
 
     <div id="discussion"><h4>Comments</h4></div>
     <div id="comment-{{ comment._id }}" class="comment row" ng-class="{'comment-alert': comment.alert}" ng-repeat="comment in discussion">
-        <div class="col-xs-1 col-super-small">
+        <div class="col-xs-1">
             <img class="comment-avatar" ng-src="{{ comment.authorAvatarUrl }}">
             <div>
                 <!-- perhaps edit/delete buttons here -->
@@ -28,13 +28,13 @@
                       placeholder="comment text here...">
             </textarea>
         </div>
-        <button ng-click="postComment()" class="btn btn-default" ng-disabled="!newComment">Post Comment</button>
+        <button ng-click="postComment()" class="btn btn-default" type='button' ng-disabled="!newComment">Post Comment</button>
     </div>
 
     <script type="text/ng-template" id="/people-mentions.tpl">
         <ul class="list-group user-search">
             <li mentio-menu-item="person" ng-repeat="person in items" class="list-group-item mention-user-item">
-                <img ng-src="{{person.photo}}" class="comment-mention-user-photo">
+                <img ng-src="{{person.photoUrl}}" class="comment-mention-user-photo">
                 <span ng-bind-html="person.displayName | mentioHighlight:typedTerm:'menu-highlighted' | unsafe"></span>
             </li>
         </ul>
