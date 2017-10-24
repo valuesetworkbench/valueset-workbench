@@ -84,10 +84,10 @@ exports.agreeToTermsAndPrivacyPolicy = function(req, res, next) {
 };
 
 exports.checkToken = function(req, res, next) {
-	var apiKey = req.header('Apikey');
+	var apiKey = req.header('Apikey') || req.query.apikey;
 
 	if (!apiKey) {
-		res.status(400).send({message: "All CTS2 requests must include an `Apikey` entry in the header."});
+		res.status(400).send({message: "All CTS2 requests must include an `apikey` entry in the header OR an `apikey` query parameter on the URL."});
 	} else {
 		User.findOne({
 			apiKey: apiKey
