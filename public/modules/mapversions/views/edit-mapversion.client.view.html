@@ -59,9 +59,9 @@
                             </button>
                         </li>
                         <li>
-                            <button type="button" class="btn btn-link" data-ng-click="export();" tooltip="Export" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
-                                <i class="glyphicon glyphicon-export"></i> <span data-ng-show="showText">Export</span>
-                            </button>
+                            <a ng-href="{{'/mapversions/' + encodedId + '/export'}}" class="btn btn-link" download="{{mapVersion.versionOf.content + '-' + mapVersion.officialResourceVersionId}}.csv" tooltip="Export" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                                <i class="glyphicon glyphicon-export"></i> <span>Export</span>
+                            </a>
                         </li>
                         <li>
                             <api api="api"></api>

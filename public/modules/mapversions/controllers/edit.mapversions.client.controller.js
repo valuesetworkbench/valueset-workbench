@@ -13,6 +13,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
         this.tab = 1;
 
+        $scope.encodedId = $stateParams.mapversionId;
         $scope.id = decodeURIComponent($stateParams.mapversionId);
 
         $scope.open = $scope.isNew = !($scope.id && $scope.id != 'undefined');
@@ -879,7 +880,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
         $modalInstance.close($scope.data);
     }; // end done
 
-}).controller('mapversion-importCtrl',function($log,$http,$timeout,$scope,$modalInstance,data){
+}).controller('mapversion-importCtrl',function($log,$http,$timeout,$scope,$modalInstance,Utils,data){
     $scope.pasted = "";
 
     var mapVersion = data.mapVersion;
@@ -890,12 +891,15 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
     var mapEntries = data.mapEntries;
     var mapEntriesMap = data.mapEntriesMap;
 
-    $scope.headers = ["Source URI", "Source Code", "Target URI", "Target Code"];
+    $scope.headers = ["Source Code", "Source CodeSystem", "Source Designation", "Target Code", "Target CodeSystem", "Target Designation"];
 
     $scope.parse = function(text) {
         var x = text.split('\n');
+
+        var delimiter = Utils.detectCsvOrTsv(text);
+
         for (var i=0; i<x.length; i++) {
-            var y = x[i].split('\t');
+            var y = x[i].split(delimiter);
             x[i] = y;
         }
 
@@ -904,10 +908,12 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
     $scope.generate = function() {
         var indexes = {
-            "Source URI": -1,
+            "Source CodeSystem": -1,
             "Source Code": -1,
-            "Target URI": -1,
-            "Target Code": -1
+            "Source Designation": -1,
+            "Target CodeSystem": -1,
+            "Target Code": -1,
+            "Target Designation": -1
         };
 
         $('.parsed-data-table-header-row').each(function(e) {

@@ -707,7 +707,7 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
     $scope.done = function () {
         $modalInstance.close($scope);
     }; // end done
-}).controller('vsd-spreadsheetImportCtrl', function ($log, $http, $timeout, $scope, $modalInstance, data) {
+}).controller('vsd-spreadsheetImportCtrl', function ($log, $http, $timeout, $scope, $modalInstance, Utils, data) {
     $scope.pasted = "";
 
     $scope.headers = ["Code", "Designation"];
@@ -716,8 +716,11 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
 
     $scope.parse = function (text) {
         var x = text.split('\n');
+
+        var delimiter = Utils.detectCsvOrTsv(text);
+
         for (var i = 0; i < x.length; i++) {
-            var y = x[i].split('\t');
+            var y = x[i].split(delimiter);
             x[i] = y;
         }
 

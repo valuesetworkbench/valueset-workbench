@@ -30,10 +30,38 @@ exports.create = function(req, res) {
         if(error) {
             res.status(500).send({
                 message: errorHandler.getErrorMessage(error)
-            })
+            });
         } else {
-            res.send(response)
+            res.send(response);
         }
+    });
+};
+
+exports.export = function(req, res) {
+    exports.readMapVersionEntries(
+        req.mapversion.MapVersionMsg.heading.resourceRoot +
+        req.mapversion.MapVersionMsg.heading.resourceURI,
+        function (mapEntries) {
+            res.write("from_code,from_codesystem,from_designation,to_code,to_codesystem,to_designation\n");
+
+            _.each(mapEntries.MapEntryList.entry, function (entry) {
+                entry = entry.entry;
+                _.each(entry.mapSet[0].mapTarget, function (target) {
+                    res.write([entry.mapFrom.name, entry.mapFrom.namespace, entry.mapFrom.designation,
+                            target.mapTo.name, target.mapTo.namespace, target.mapTo.designation].join(",") + "\n");
+                });
+            });
+
+            res.end();
+        }
+    );
+};
+
+exports.mapversionByID = function(req, res, next, id) {
+    exports.readMapVersion(id, function(mapversion) {
+        req.mapversion = mapversion;
+        req.resource = mapversion;
+        next();
     });
 };
 
@@ -50,28 +78,6 @@ exports.createMapEntries = function(req, res) {
     }, function(error, response, body){
         res.send(response);
     });
-};
-
-/**
- * Show the current Conceptmap
- */
-exports.read = function(req, res) {
-    console.log(req.mapVersion);
-	res.jsonp(req.mapVersion);
-};
-
-/**
- * Update a Conceptmap
- */
-exports.update = function(req, res) {
-	//
-};
-
-/**
- * Delete an Conceptmap
- */
-exports.delete = function(req, res) {
-	//
 };
 
 /**
@@ -93,10 +99,14 @@ exports.readMapVersion = function(id, callback) {
     });
 };
 
-/**
- * Conceptmap authorization middleware
- */
-exports.hasAuthorization = function(req, res, next) {
-	//
-	next();
+exports.readMapVersionEntries = function(id, callback) {
+    request.get({
+        headers: {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        },
+        url: id + '/entries?list=true'
+    }, function(error, response, body){
+        callback(JSON.parse(body));
+    });
 };

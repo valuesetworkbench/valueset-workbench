@@ -33,5 +33,30 @@ angular.module('core').service('Utils', [
 			return url.replace(/\/+$/, "");
 		}
 
+		this.detectCsvOrTsv = function (text) {
+            var x = text.split('\n');
+
+            var voteCsv = 0;
+            var voteTsv = 0;
+            for (var i=0; i<x.length; i++) {
+                var tsv = x[i].split('\t').length;
+                var csv = x[i].split(',').length;
+                if(tsv > csv) {
+                    voteTsv++;
+                } else {
+                    voteCsv++;
+                }
+            }
+
+            var delimiter;
+            if(tsv > csv) {
+                delimiter = '\t';
+            } else {
+                delimiter = ',';
+            }
+
+            return delimiter;
+		}
+
 	}
 ]);
