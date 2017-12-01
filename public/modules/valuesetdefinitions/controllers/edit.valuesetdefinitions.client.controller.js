@@ -56,14 +56,13 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
         $scope.toString = function(resource) {
             var changedResource;
             if(! resource) {
-                changedResource = $scope.mapVersion;
+                changedResource = $scope.valuesetdefinition;
             } else {
                 changedResource = resource;
             }
 
-            changedResource = JSON.parse(JSON.stringify(changedResource));
+            changedResource = JSON.parse(angular.toJson((changedResource)));
             delete changedResource.changeDescription;
-            delete changedResource['$$hashKey'];
 
             return JSON.stringify(changedResource, null, 2);
         }

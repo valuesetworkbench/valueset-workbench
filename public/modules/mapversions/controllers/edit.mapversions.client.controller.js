@@ -206,9 +206,8 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                 changedResource = resource;
             }
 
-            changedResource = JSON.parse(JSON.stringify(changedResource));
+            changedResource = JSON.parse(angular.toJson(changedResource));
             delete changedResource.changeDescription;
-            delete changedResource['$$hashKey'];
 
             return JSON.stringify(changedResource, null, 2);
         }
