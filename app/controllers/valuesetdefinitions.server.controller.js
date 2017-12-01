@@ -33,11 +33,20 @@ exports.create = function(req, res) {
     });
 };
 
-/**
- * Show the current Valueset
- */
-exports.read = function(req, res) {
-	res.json(req.valuesetdefinition);
+exports.export = function(req, res) {
+    exports.readValueSetDefinitionResolution(
+        req.valuesetdefinition.ValueSetDefinitionMsg.heading.resourceRoot +
+        req.valuesetdefinition.ValueSetDefinitionMsg.heading.resourceURI,
+        function (valueSetDefinitionResolution) {
+            res.write("code,codesystem,designation\n");
+
+            _.each(valueSetDefinitionResolution.ResolvedValueSetMsg.resolvedValueSet.entry, function (entry) {
+                res.write([entry.name, entry.namespace, entry.designation].join(",") + "\n");
+            });
+
+            res.end();
+        }
+    );
 };
 
 
@@ -48,13 +57,13 @@ exports.list = function(req, res) {
     lists.getList("valuesetdefinitions", "ValueSetDefinitionDirectory", req, res);
 };
 
-
 /**
  * Valueset middleware
  */
  exports.valuesetdefinitionByID = function(req, res, next, id) {
      exports.readValueSetDefinition(id, function(valuesetdefinition) {
          req.valuesetdefinition = valuesetdefinition;
+         req.resource = valuesetdefinition;
          next();
      });
  };
@@ -66,6 +75,18 @@ exports.readValueSetDefinition = function(id, callback) {
             'content-type': 'application/json'
         },
         url: id
+    }, function(error, response, body){
+        callback(JSON.parse(body));
+    });
+};
+
+exports.readValueSetDefinitionResolution = function(id, callback) {
+    request.get({
+        headers: {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        },
+        url: id + "/resolution?complete=true"
     }, function(error, response, body){
         callback(JSON.parse(body));
     });

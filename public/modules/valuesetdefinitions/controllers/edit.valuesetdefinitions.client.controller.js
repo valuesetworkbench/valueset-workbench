@@ -4,6 +4,7 @@
 angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsController', ['$scope', '$http', '$document', '$stateParams', '$location', 'dialogs', 'Authentication', 'Valuesetdefinitions', 'Mapversions', 'Notification', 'HistoryChange', '$timeout', 'Utils',
     function ($scope, $http, $document, $stateParams, $location, dialogs, Authentication, Valuesetdefinitions, Mapversions, Notification, HistoryChange, $timeout, Utils) {
 
+        $scope.encodedId = $stateParams.valuesetdefinitionId;
         $scope.id = decodeURIComponent($stateParams.valuesetdefinitionId);
 
         $scope.authentication = Authentication;

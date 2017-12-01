@@ -9,6 +9,9 @@ module.exports = function(app) {
 		.get(valuesetdefinitions.list)
 		.post(users.requiresLogin, valuesetdefinitions.create);
 
+    app.route('/valuesetdefinitions/:valuesetdefinitionId/export')
+        .get(users.requiresLogin, users.isGroupAuthorized, valuesetdefinitions.export);
+
 	// Finish by binding the Valueset middleware
 	app.param('valuesetdefinitionId', valuesetdefinitions.valuesetdefinitionByID);
 };
