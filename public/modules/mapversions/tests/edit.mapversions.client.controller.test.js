@@ -50,7 +50,12 @@
 
             // Initialize the Mapversions controller.
             EditMapversionsController = $controller('EditMapversionsController', {
-                $scope: scope
+                $scope: scope,
+                Config: {
+                    isCedarEnabled: function () {
+                        return true;
+                    }
+                }
             });
         }));
 

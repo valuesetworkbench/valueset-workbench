@@ -51,7 +51,12 @@
 
 			// Initialize the Valuesets controller.
 			EditValuesetdefinitionsController = $controller('EditValuesetdefinitionsController', {
-				$scope: scope
+				$scope: scope,
+                Config: {
+                    isCedarEnabled: function () {
+						return true;
+                    }
+                }
 			});
 
 		}));

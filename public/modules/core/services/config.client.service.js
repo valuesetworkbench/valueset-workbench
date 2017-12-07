@@ -1,9 +1,9 @@
 'use strict';
 
 //Menu service used for managing  menus
-angular.module('core').service('Config', [
+angular.module('core').service('Config', [ 'Authentication',
 
-	function() {
+	function(Authentication) {
 
 		this.getResourceUriBase = function() {
 			return config.resourceUriBase;
@@ -22,7 +22,7 @@ angular.module('core').service('Config', [
         }
 
         this.isCedarEnabled = function() {
-            return window.user.cedarKey;
+            return Authentication.user.cedarKey;
         }
 
 	}
