@@ -1,8 +1,8 @@
 'use strict';
 
 // Valuesets controller
-angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsController', ['$scope', '$http', '$document', '$stateParams', '$location', 'dialogs', 'Authentication', 'Valuesetdefinitions', 'Mapversions', 'Notification', 'HistoryChange', '$timeout', 'Utils',
-    function ($scope, $http, $document, $stateParams, $location, dialogs, Authentication, Valuesetdefinitions, Mapversions, Notification, HistoryChange, $timeout, Utils) {
+angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsController', ['$scope', '$http', '$document', '$stateParams', '$location', 'dialogs', 'Authentication', 'Valuesetdefinitions', 'Mapversions', 'Notification', 'HistoryChange', '$timeout', 'Config', 'Utils',
+    function ($scope, $http, $document, $stateParams, $location, dialogs, Authentication, Valuesetdefinitions, Mapversions, Notification, HistoryChange, $timeout, Config, Utils) {
 
         $scope.encodedId = $stateParams.valuesetdefinitionId;
         $scope.id = decodeURIComponent($stateParams.valuesetdefinitionId);
@@ -10,6 +10,8 @@ angular.module('valuesetdefinitions').controller('EditValuesetdefinitionsControl
         $scope.authentication = Authentication;
 
         $scope.warnings = [];
+
+        $scope.isMetadataEnabled = Config.isCedarEnabled();
 
         $scope.loadingCodeSystemVersions = true;
         $http.get('/codesystemversions?maxtoreturn=-1').

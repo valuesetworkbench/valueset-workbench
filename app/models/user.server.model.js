@@ -65,6 +65,10 @@ var UserSchema = new Schema({
 		type: String,
 		default: uuid.v4()
 	},
+    cedarKey: {
+        type: String,
+        default: ''
+    },
     enableAlerts: {
         type: Boolean,
         default: false

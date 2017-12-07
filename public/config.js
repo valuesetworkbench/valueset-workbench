@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'Value Set Workbench';
-	var applicationModuleVendorDependencies = ['ngResource', 'ui.router', 'ui.bootstrap', 'ui.utils', 'dialogs.main', 'dialogs.default-translations', 'ngSanitize', 'ui.select', 'ui.sortable', 'ngDragDrop', 'swd.inspector-gadget', 'ng-sortable', angularDragula(angular), 'duScroll', 'mentio', 'ui-notification', 'ngTagsInput', 'angular-intro', 'nvd3', 'frapontillo.gage', 'checklist-model', 'btford.markdown', 'ui.ace'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ui.router', 'ui.bootstrap', 'ui.utils', 'dialogs.main', 'dialogs.default-translations', 'ngSanitize', 'ui.select', 'ui.sortable', 'ngDragDrop', 'swd.inspector-gadget', 'ng-sortable', angularDragula(angular), 'duScroll', 'mentio', 'ui-notification', 'ngTagsInput', 'angular-intro', 'nvd3', 'frapontillo.gage', 'checklist-model', 'btford.markdown', 'ui.ace', 'angular.filter'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {

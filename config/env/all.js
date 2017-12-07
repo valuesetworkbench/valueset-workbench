@@ -24,6 +24,9 @@ module.exports = {
     cts2: {
 		url: process.env.CTS2_URL || 'http://localhost:8080/'
     },
+	cedar: {
+		url: "https://resource.metadatacenter.org"
+	},
 	automap: {
 		url: process.env.AUTOMAP_URL || 'http://localhost:8181/'
 	},

@@ -1,0 +1,40 @@
+<div>
+    <form name="workingTemplatesForm">
+        <div class="form-group cedar">
+            <div ng-repeat="template in workingTemplates">
+                <cedar-template template='template' resource="resource" remove="remove" save="save"></cedar-template>
+            </div>
+        </div>
+    </form>
+
+    <div>
+        <div class="form-group cedar">
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Add Metadata Template:</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <ui-select ng-model="selected.template" theme="bootstrap" on-select="getTemplate($select.selected['@id'])">
+                        <ui-select-match placeholder="add metadata template...">
+                            <div>
+                                <span>{{ $select.selected.displayName }}</span>
+                            </div>
+                        </ui-select-match>
+                        <ui-select-choices repeat="template in templates | filterBy: ['displayName', 'description']: $select.search">
+                            <div>
+                                <span class="">
+                                    <span ng-bind-html="template.displayName | highlight: $select.search"></span>
+                                </span>
+                                <em><small><i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                    <span ng-bind-html="template.description | highlight: $select.search"></span>
+                                </small></em>
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

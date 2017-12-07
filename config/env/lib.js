@@ -58,7 +58,8 @@ module.exports = {
             'public/lib/diff2html/dist/diff2html-ui.js',
             'public/lib/jsdiff/diff.js',
             'public/lib/ace-builds/src-min-noconflict/ace.js',
-            'public/lib/angular-ui-ace/ui-ace.js'
+            'public/lib/angular-ui-ace/ui-ace.js',
+            'public/lib/angular-filter/dist/angular-filter.js'
         ]
     }
 }

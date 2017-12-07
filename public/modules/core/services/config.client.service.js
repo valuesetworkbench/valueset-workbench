@@ -21,5 +21,9 @@ angular.module('core').service('Config', [
             return config.header;
         }
 
+        this.isCedarEnabled = function() {
+            return window.user.cedarKey;
+        }
+
 	}
 ]);

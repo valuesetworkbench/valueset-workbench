@@ -1,0 +1,16 @@
+<div>
+    <div class="form-horizontal">
+        <div>
+            <label class="col-sm-3 control-label cedar-label">
+                {{ templateField['schema:name'] }}
+            </label>
+
+            <div class="col-sm-9 form-group">
+                <input type="text"
+                       ng-init="templateField.value = getTemplateFieldValue(templateField['@id'])"
+                       ng-change="save(template)"
+                       class="form-control newvalue dynControl" data-ng-model="templateField.value" name="value"/>
+            </div>
+        </div>
+    </div>
+</div>

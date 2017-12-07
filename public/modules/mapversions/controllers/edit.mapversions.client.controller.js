@@ -1,8 +1,8 @@
 'use strict';
 
 // Mapversions controller
-angular.module('mapversions').controller('EditMapversionsController', ['$scope', '$window', '$compile', 'dialogs', '$http', '$timeout', '$stateParams', '$location', 'Authentication', 'Mapversions', 'Valuesetdefinitions', 'Notification', 'HistoryChange', 'Utils', 'Change',
-	function($scope, $window,$compile, dialogs, $http, $timeout, $stateParams, $location, Authentication, Mapversions, Valuesetdefinitions, Notification, HistoryChange, Utils, Change)  {
+angular.module('mapversions').controller('EditMapversionsController', ['$scope', '$window', '$compile', 'dialogs', '$http', '$timeout', '$stateParams', '$location', 'Authentication', 'Mapversions', 'Valuesetdefinitions', 'Notification', 'HistoryChange', 'Utils', 'Config', 'Change',
+	function($scope, $window,$compile, dialogs, $http, $timeout, $stateParams, $location, Authentication, Mapversions, Valuesetdefinitions, Notification, HistoryChange, Utils, Config, Change)  {
         var changeHolder = Change.newChangeHolder();
 
         changeHolder.observe(function (dirty) {
@@ -19,6 +19,8 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
         $scope.open = $scope.isNew = !($scope.id && $scope.id != 'undefined');
 
         $scope.authentication = Authentication;
+
+        $scope.isMetadataEnabled = Config.isCedarEnabled();
 
         $scope.expanded = false;
         $scope.showText = true;
