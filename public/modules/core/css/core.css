@@ -111,6 +111,9 @@
     padding-top: 15px;
 }
 
+.api-url {
+    word-wrap: break-word;
+}
 /*
 select,
 select.form-control {
