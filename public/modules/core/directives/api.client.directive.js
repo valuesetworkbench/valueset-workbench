@@ -24,6 +24,8 @@ angular.module('core')
 
         $scope.user = Authentication.user;
 
+        $scope.hasApi = {};
+
         $scope.getUrl = function(entry) {
             var url = entry.url;
             if (entry.type == "local") {
@@ -32,6 +34,14 @@ angular.module('core')
 
             if (entry.type == "cts2") {
                 return url.replace(Config.getCts2ServiceRoot(), window.location.origin + "/cts2/");
+            }
+
+            if (entry.type == "fhir") {
+                return window.location.origin + "/fhir/" + url;
+            }
+
+            if (entry.type == "svs") {
+                return window.location.origin + "/svs/" + url;
             }
         }
 
@@ -51,6 +61,10 @@ angular.module('core')
         }
 
         $scope.api = data.api;
+
+        _.forEach($scope.api, function (entry) {
+            $scope.hasApi[entry.type] = true;
+        });
 
         $scope.done = function () {
             $modalInstance.dismiss('canceled');

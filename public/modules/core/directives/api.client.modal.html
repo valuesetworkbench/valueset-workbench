@@ -6,7 +6,12 @@
 </div>
 <div class="modal-body">
     <div ng-repeat="entry in api" class="api-row">
-        <h4><img ng-if="entry.type == 'cts2'" height="35px" src="/modules/core/img/brand/cts2-thin.png"> {{ entry.name }}</h4>
+        <h4>
+            <img ng-if="entry.type == 'cts2'" height="35px" src="/modules/core/img/brand/cts2-thin.png">
+            <img ng-if="entry.type == 'fhir'" height="35px" src="/modules/core/img/brand/FHIR.png">
+            <img ng-if="entry.type == 'svs'" height="35px" src="/modules/core/img/brand/ihe.png">
+            {{ entry.name }}
+        </h4>
         <div><em>{{ entry.description }}</em></div>
         <div>
             <span class="label label-primary">{{ entry.method }}</span>
@@ -33,5 +38,15 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" ng-click="done()">Done</button>
+    <div class="text-left">
+        <div ng-if="hasApi.cts2">
+            <small>CTS2® logo copyright Object Management Group (OMG).</small>
+        </div>
+        <div ng-if="hasApi.fhir">
+            <small>FHIR® is the registered trademark of HL7 and is used with the permission of HL7. The Flame Design mark is the registered trademark of HL7 and is used with the permission of HL7.</small>
+        </div>
+        <div ng-if="hasApi.svs">
+            <small>IHE and the IHE logo are registered trademarks of IHE-Europe.</small>
+        </div>
+    </div>
 </div>
