@@ -21,7 +21,34 @@ exports.eventEmitter = eventEmitter;
  * Create a Valueset
  */
 exports.create = function(req, res) {
-	//
+    var codesystemversion = req.body;
+
+    request.post({
+        headers: {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(util.addChangeMetadata(req.user, codesystemversion)),
+        url: util.stripTrailingSlash(config.cts2.url) + '/codesystemversion?changesetcontext=foo'
+    }, function(error, response, body){
+        res.send(response)
+    });
+};
+
+
+exports.createEntity = function(req, res) {
+    var entity = req.body;
+
+    request.post({
+        headers: {
+            'accept': 'application/json',
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(util.addChangeMetadata(req.user, entity)),
+        url: util.stripTrailingSlash(config.cts2.url) + '/entity?changesetcontext=foo'
+    }, function(error, response, body){
+        res.send(response)
+    });
 };
 
 /**

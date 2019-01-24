@@ -9,6 +9,9 @@ module.exports = function(app) {
 		.get(codesystemversions.list)
 		.post(users.requiresLogin, codesystemversions.hasAuthorization, codesystemversions.create);
 
+    app.route('/entities')
+        .post(users.requiresLogin, codesystemversions.hasAuthorization, codesystemversions.createEntity);
+
 	app.route('/codesystemversions/:codesystemversionId')
 		.get(codesystemversions.read)
 		.put(users.requiresLogin, codesystemversions.hasAuthorization, codesystemversions.update)

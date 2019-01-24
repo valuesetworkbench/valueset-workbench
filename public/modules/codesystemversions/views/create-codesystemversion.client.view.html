@@ -1,0 +1,28 @@
+<section data-ng-controller="CreateCodesystemversionsController" xmlns="http://www.w3.org/1999/html">
+    <div class="page-header">
+        <h2>Create a Code System</h2>
+    </div>
+
+    <div class="col-md-12">
+        <form name="codesystemversionForm" novalidate>
+            <fieldset>
+                <div>
+                    <div class="form-group">
+                        <label class="control-label" for="name">Name</label>
+                        <div class="controls">
+                            <input type="text" min="1" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-success" data-ng-click="create();" ng-disabled="codesystemversionForm.$invalid" tooltip="Save" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                        <i class="glyphicon glyphicon-floppy-disk"></i> Create New
+                    </button>
+                </div>
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+            </fieldset>
+        </form>
+    </div>
+</section>

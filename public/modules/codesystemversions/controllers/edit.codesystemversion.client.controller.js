@@ -33,8 +33,21 @@ angular.module('codesystemversions').controller('EditCodesystemversionsControlle
         };
 
         $scope.saveCodesystemversion = function () {
+            $scope.codesystemversion.changeDescription = {
+                changeType: "UPDATE",
+                containingChangeSet: "foo"
+            }
+
             Codesystemversions.save($scope.id, {CodeSystemVersionCatalogEntry: $scope.codesystemversion}, function (response) {
                 Notification.success('Code System Saved');
+            });
+        };
+
+        $scope.getEntities = function () {
+            var entitiesHref = $scope.id + "/entities";
+            var entitiesHref = $scope.id + "/entities";
+            Codesystemversions.getEntities(encodeURIComponent(entitiesHref), function (response) {
+                $scope.entities = response.data.EntityDirectory.entry;
             });
         };
 
@@ -51,6 +64,16 @@ angular.module('codesystemversions').controller('EditCodesystemversionsControlle
                 });
             });
 
+        };
+
+        $scope.createEntity = function (entity) {
+            dialogs.create('/modules/codesystemversions/views/create-entity-modal.html', 'codesystemversion-createEntityCtrl',
+                {
+                    csv: $scope.codesystemversion,
+                    done: function () {
+                        $scope.getEntities()
+                    }
+                });
         };
 
         $scope.editEntity = function (entity) {
@@ -339,6 +362,42 @@ angular.module('codesystemversions').controller('EditCodesystemversionsControlle
 
         $http.put("/proxy/" + encodeURIComponent(data.entity.href + "?changesetcontext=foo"), {EntityDescription: {namedEntity: $scope.entity}}).then(function (response) {
             $modalInstance.close({version: $scope.version, description: $scope.description});
+        });
+
+    }; // end save
+
+}).controller('codesystemversion-createEntityCtrl', function ($scope, $http, $modalInstance, data) {
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('canceled');
+    }; // end cancel
+
+    $scope.save = function () {
+        $scope.entity = {
+            about: data.csv.about + "/" + $scope.name,
+            entityID: {
+                namespace: data.csv.versionOf.content,
+                name: $scope.name
+            },
+            describingCodeSystemVersion: {
+                version: {
+                    content: data.csv.codeSystemVersionName,
+                    href: data.csv.about
+                },
+                codeSystem: data.csv.versionOf
+            }
+        };
+
+        $scope.entity.changeableElementGroup = {
+            changeDescription: {
+                changeType: "Create",
+                containingChangeSet: "foo"
+            }
+        }
+
+        $http.post("/entities?changesetcontext=foo", {EntityDescription: {namedEntity: $scope.entity}}).then(function (response) {
+            $modalInstance.close();
+            data.done()
         });
 
     }; // end save

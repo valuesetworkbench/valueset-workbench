@@ -1,0 +1,31 @@
+<!-- Modal -->
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" ng-click="cancel();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title" id="myModalLabel">Edit Entity</h4>
+</div>
+<div class="modal-body">
+
+    <div class="row">
+        <form id="createEntityForm" class="form-horizontal">
+            <div>
+                <div class="col-xs-12">
+                    <label class="control-label" for="name">Name</label>
+                    <div class="controls">
+                        <input type="text" min="1" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-success" data-ng-click="save();" ng-disabled="createEntityForm.$invalid" tooltip="Save" tooltip-trigger tooltip-animation="false" tooltip-placement="right" tooltip-enable="{{ expanded }}">
+                    <i class="glyphicon glyphicon-floppy-disk"></i> Create New
+                </button>
+            </div>
+            <div data-ng-show="error" class="text-danger">
+                <strong data-ng-bind="error"></strong>
+            </div>
+        </form>
+    </div>
+
+</div>
+

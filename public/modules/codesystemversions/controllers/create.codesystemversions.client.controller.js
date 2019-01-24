@@ -6,31 +6,13 @@ angular.module('codesystemversions').controller('CreateCodesystemversionsControl
 
         $scope.authentication = Authentication;
 
-        $scope.valuesets = {};
-
-        Valuesetdefinitions.query({}, function (response) {
-            $scope.valueSetDefinitions = response.data.ValueSetDefinitionDirectory.entry;
-        });
-
         $scope.create = function () {
             var codesystemversion = {
-                about: Config.getResourceUriBase() + '/map/' + $scope.name + '/version/1',
+                about: Config.getResourceUriBase() + '/codesystem/' + $scope.name + '/version/1',
                 officialResourceVersionId: '1',
-                codesystemversionName: $scope.name + '-1',
+                codeSystemVersionName: $scope.name + '-1',
                 versionOf: {
                     content: $scope.name
-                },
-                fromValueSetDefinition: {
-                    valueSetDefinition: {
-                        uri: $scope.valuesets.fromValueSetDefinition.about
-                    },
-                    valueSet: $scope.valuesets.fromValueSetDefinition.definedValueSet
-                },
-                toValueSetDefinition: {
-                    valueSetDefinition: {
-                        uri: $scope.valuesets.toValueSetDefinition.about
-                    },
-                    valueSet: $scope.valuesets.toValueSetDefinition.definedValueSet
                 }
             };
 
@@ -39,7 +21,7 @@ angular.module('codesystemversions').controller('CreateCodesystemversionsControl
 
                     $location.path('/codesystemversions/' + location + '/edit');
 
-                    Notification.success('Map Version Saved');
+                    Notification.success('Code System Version Saved');
                 });
 
             HistoryChange.onHistoryChange();
