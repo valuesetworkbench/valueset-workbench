@@ -58,7 +58,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
             $scope.fromEntitiesLoading = true;
             var href = $scope.mapVersion.fromValueSetDefinition.valueSetDefinition.href;
-            $http.get('proxy/' + encodeURIComponent(href + '/entities' + query)).
+            return $http.get('proxy/' + encodeURIComponent(href + '/entities' + query)).
                 then(function (data) {
                     delete $scope.fromEntitiesLoading;
 
@@ -77,7 +77,6 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                             return map;
                         }, {});
                     }
-
                 });
         }
 
@@ -89,7 +88,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
             $scope.toEntitiesLoading = true;
             var href = $scope.mapVersion.toValueSetDefinition.valueSetDefinition.href;
-            $http.get('proxy/' + encodeURIComponent(href + '/entities' + query)).
+            return $http.get('proxy/' + encodeURIComponent(href + '/entities' + query)).
                 then(function (data) {
                     delete $scope.toEntitiesLoading;
 
@@ -385,9 +384,12 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
 
                     $scope.mapEntries = mapEntries;
                     $scope.buildMapEntriesMap();
-                    $scope.renderConnections();
-                    loadFromEntities();
-                    loadToEntities();
+                    var p1 = loadFromEntities();
+                    var p2 = loadToEntities();
+
+                    Promise.all([p1, p2]).then(function () {
+                        $scope.renderConnections();
+                    });
                 });
             });
         };
@@ -705,7 +707,7 @@ angular.module('mapversions').controller('EditMapversionsController', ['$scope',
                         }, {});
                     }
 
-                    if ($scope.mapEntries && $scope.filteredFromEntitiesMap) {
+                    if ($scope.mapEntries && $scope.filteredFromEntitiesMap && $scope.filteredToEntitiesMap) {
                         angular.forEach($scope.mapEntries, function (mapEntry) {
                             if (mapEntry.entry.mapFrom &&
                                 mapEntry.entry.mapSet &&

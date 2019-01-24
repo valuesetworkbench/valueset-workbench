@@ -10,3 +10,5 @@ app/tests/coverage/
 /target/
 config/protected.json
 public/dist
+*.iml
+package-lock.json

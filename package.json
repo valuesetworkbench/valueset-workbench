@@ -67,7 +67,6 @@
     "grunt-karma": "~0.8.2",
     "grunt-mocha-test": "~0.12.7",
     "grunt-ngmin": "0.0.3",
-    "grunt-node-inspector": "~0.4.1",
     "grunt-nodemon": "~0.3.0",
     "jade": "1.11.0",
     "karma": "~0.12.0",
@@ -86,6 +85,7 @@
     "phantomjs-polyfill": "0.0.2",
     "should": "~4.0.4",
     "sinon": "^1.17.3",
-    "supertest": "^0.13.0"
+    "supertest": "^0.13.0",
+    "v8-profiler": "5.7.0"
   }
 }

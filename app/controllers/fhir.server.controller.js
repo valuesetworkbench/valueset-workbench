@@ -15,7 +15,7 @@ var mongoose = require('mongoose'),
 exports.eventEmitter = eventEmitter;
 
 exports.get = function(req, res, next) {
-    var url =  config.cts2.url + "fhir/" + req.param(0);
+    var url =  config.cts2.url + "fhir/" + req.param(0) + "/$expand";
     request.get({
         headers: {
             'accept': 'application/json',
